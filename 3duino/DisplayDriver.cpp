@@ -1,5 +1,4 @@
 #include "DisplayDriver.h"
-#include <Arduino.h>
 
 DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
 {
@@ -10,7 +9,20 @@ DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolution
   buffer = new bool*[resolutionX];
   for (int i = 0; i < resolutionX; i++) {
     buffer[i] = new bool[resolutionY];
+    for (int j = 0; j < resolutionY; j++) {
+      // makes a random pattern as a test render
+      buffer[i][j] = i > 3 && i < 12 && j > 3 && j < 12;
+
+      // prints the state of the buffer for debugging
+      if (buffer[i][j]) {
+        Serial.write("O");
+      } else {
+        Serial.write("X");
+      }
+    }
+    Serial.write("\n");
   }
+
 
   //Set all pins to output mode
   pinMode(data, OUTPUT);
@@ -44,18 +56,65 @@ void DisplayDriver::sendData(uint8_t address, uint8_t din) {
   digitalWrite(cs, HIGH);
 }
 
-void DisplayDriver::clearScreen()
-{
-  for (uint8_t i = 0; i < 8; i++) 
-  {
-    drawColumn(i, 0);
-  }
+// sends data, but doesn't interact with the CS pin
+// this should be used for daisy-chaining
+void DisplayDriver::sendDataLow(uint8_t address, uint8_t din) {
+  shiftOut(data, clock, MSBFIRST, address);
+  shiftOut(data, clock, MSBFIRST, din);
 }
 
+// clears all displays
+void DisplayDriver::clearScreen()
+{
+  for (int i = 0; i < resX; i++) 
+  {
+    for (int j = 0; j < resY; j++) {
+        buffer[i][j] = false;
+    }
+  }
+  renderDisplay();
+}
+
+
+// we might not need this anymore
 void DisplayDriver::drawColumn(uint8_t column, uint8_t value)
 {
   //Don't draw the column if it isn't a display register
   if (column < 0b0000 || column > 0b0111) return;
   //MAX7219 display registers start at 0x01 instead of 0
   sendData(column + 1, value);
+}
+
+// converts the first 8 boolean values in an array to a byte
+uint8_t DisplayDriver::boolsToByte(const bool *bits) {
+  uint8_t byte = 0;
+    for (int i = 0; i < 8; i++) {
+      if (bits[i]) {
+        byte |= 1 << (7 - i);
+      }
+    }
+  return byte;
+}
+
+// renders whatever content is currently in the buffer
+void DisplayDriver::renderDisplay() {
+
+  // loops through half of the columns in the buffer
+  for (int i = 0; i < resY / 2; i++) {
+    bool bytes[(resX + resY) / 8][8];
+    int segSwitch = 0;
+    // loops through all rows
+    for (int j = 0; j < resX; j++) {
+      if (j >= resX / 2) {segSwitch = 1;}
+      bytes[0 + segSwitch][7-(j - (8 * segSwitch))] = buffer[j][i];
+      bytes[2 + segSwitch][7-(j - (8 * segSwitch))] = buffer[j][i+8];
+    }
+
+    digitalWrite(cs, LOW);
+    for (bool* byte : bytes) {
+      sendDataLow(i + 1, boolsToByte(byte));
+    }
+    digitalWrite(cs, HIGH);
+    delete[] bytes;
+  }
 }
