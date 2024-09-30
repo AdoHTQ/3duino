@@ -1,9 +1,16 @@
 #ifndef VECTORS_H
 #define VECTORS_H
 
+class Vector2 {
+public:
+  float x;
+  float y;
+
+  Vector2();
+  Vector2(float, float);
+};
+
 class Vector3 {
-private:
-  
 public:
   float x;
   float y;

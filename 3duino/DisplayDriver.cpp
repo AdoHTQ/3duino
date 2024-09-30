@@ -7,20 +7,21 @@ DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolution
   this -> resY = resolutionY;
 
   buffer = new bool*[resolutionX];
+
   for (int i = 0; i < resolutionX; i++) {
     buffer[i] = new bool[resolutionY];
-    for (int j = 0; j < resolutionY; j++) {
-      // makes a random pattern as a test render
-      buffer[i][j] = i > 3 && i < 12 && j > 3 && j < 12;
+  //   for (int j = 0; j < resolutionY; j++) {
+  // //     // makes a random pattern as a test render
+  // //     buffer[i][j] = i > 3 && i < 12 && j > 3 && j < 12;
 
-      // prints the state of the buffer for debugging
-      if (buffer[i][j]) {
-        Serial.write("O");
-      } else {
-        Serial.write("X");
-      }
-    }
-    Serial.write("\n");
+  // //     // prints the state of the buffer for debugging
+  //     if (buffer[i][j]) {
+  //       Serial.write("O");
+  //     } else {
+  //       Serial.write("X");
+  //     }
+  //   }
+  //   Serial.write("\n");
   }
 
 
@@ -75,6 +76,10 @@ void DisplayDriver::clearScreen()
   renderDisplay();
 }
 
+void DisplayDriver::setPixel(uint8_t x, uint8_t y, bool state)
+{
+  buffer[x][y] = state;
+}
 
 // we might not need this anymore
 void DisplayDriver::drawColumn(uint8_t column, uint8_t value)
@@ -115,6 +120,18 @@ void DisplayDriver::renderDisplay() {
       sendDataLow(i + 1, boolsToByte(byte));
     }
     digitalWrite(cs, HIGH);
-    delete[] bytes;
+    delete[] bytes; // memory safety :)
+
+
+    // for (int i = 0; i < resX; i++) {
+    //   for (int j = 0; j < resY; j++) {
+    //     if (buffer[i][j]) {
+    //       //Serial.write("O");
+    //     } else {
+    //       //Serial.write("X");
+    //     }
+    //   }
+    //   //Serial.write("\n");
+    // }
   }
 }

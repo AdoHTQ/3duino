@@ -1,19 +1,28 @@
 #include "DisplayDriver.h" 
 #include "Renderer.h"
 
-DisplayDriver* display;
+DisplayDriver* dis;
+Renderer* renderer;
+
+bool isSetup;
 
 void setup()
 {
   Serial.begin(9600);
 
-  display = new DisplayDriver(0x10, 0x10);
+  dis = new DisplayDriver(0x10, 0x10);
+  renderer = new Renderer(dis);
 
+  isSetup = true;
 }
   
 void loop()
 {
-  display -> clearScreen();
-  display -> renderDisplay();
+  //if (!isSetup) return;
+  //dis -> clearScreen();
+  Serial.println("a");
+  renderer->drawLine(15, 15, 14, 14);
+  Serial.println("b");
+  dis -> renderDisplay();
   delay(1000);
 }
