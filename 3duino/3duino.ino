@@ -1,4 +1,5 @@
 #include "DisplayDriver.h" 
+#include "Renderer.h"
 
 DisplayDriver* display;
 
@@ -12,7 +13,7 @@ void setup()
   
 void loop()
 {
-    display -> clearScreen();
-    display -> renderDisplay();
-    delay(1000);
+  display -> clearScreen();
+  display -> renderDisplay();
+  delay(1000);
 }
