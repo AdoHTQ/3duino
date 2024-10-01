@@ -24,7 +24,7 @@ void loop()
   if (!isSetup) return;
 
   dis -> clearBuffer();
-  
+  renderer->drawTriangle(new Vector2I(random(8, 15), random(8, 15)), new Vector2I(random(8, 15), random(8, 15)), new Vector2I(random(8, 15), random(8, 15)));
   dis -> renderDisplay();
   delay(100);
 }

@@ -54,3 +54,16 @@ void Renderer::drawLine(int x1, int y1, int x2, int y2)
     dis -> setPixel(x, y, true);
   }
 }
+
+void Renderer::drawLine(Vector2I* p1, Vector2I* p2)
+{
+  drawLine(p1->x, p1->y, p2->x, p2->y);
+}
+
+void Renderer::drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3)
+{
+  drawLine(p1, p2);
+  drawLine(p2, p3);
+  drawLine(p3, p1);
+}
+

@@ -27,12 +27,15 @@ class Renderer {
 private:
   DisplayDriver* dis;
 
-  void drawLine(int, int, int, int);
-
-public:
-  Renderer(DisplayDriver*);
+  void drawLine(int x1, int y1, int x2, int y2);
+  void drawLine(Vector2I* p1, Vector2I* p2);
 
   
+
+public:
+  Renderer(DisplayDriver* displayDriver);
+
+  void drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3);
 
   //void renderMesh(Mesh mesh);
 };

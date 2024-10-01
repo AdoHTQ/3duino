@@ -27,22 +27,22 @@ private:
 
   bool** buffer;
 
-  void sendData(uint8_t, uint8_t);
+  void sendData(uint8_t address, uint8_t din);
   
-  void sendDataLow(uint8_t, uint8_t);
+  void sendDataLow(uint8_t address, uint8_t din);
 
-  void drawColumn(uint8_t, uint8_t);
+  void drawColumn(uint8_t column, uint8_t value);
 
-  uint8_t boolsToByte(const bool*);
+  uint8_t boolsToByte(const bool* bits);
 
 public:
-  DisplayDriver(uint8_t, uint8_t);
+  DisplayDriver(uint8_t resolutionX, uint8_t resolutionY);
 
   void clearScreen();
 
   void clearBuffer();
 
-  void setPixel(uint8_t, uint8_t, bool);
+  void setPixel(uint8_t x, uint8_t y, bool state);
 
   void testDisplay();
 
