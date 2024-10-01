@@ -30,7 +30,7 @@ private:
   void drawLine(int x1, int y1, int x2, int y2);
   void drawLine(Vector2I* p1, Vector2I* p2);
 
-  
+  void transformVertex()
 
 public:
   Renderer(DisplayDriver* displayDriver);
