@@ -14,7 +14,6 @@ int Renderer::sign(int value)
 
 void Renderer::drawLine(int x1, int y1, int x2, int y2)
 {
-  Serial.println("gaming");
   int y = y1;
   int x = x1;
   int dx = abs(x2-x1);
@@ -36,7 +35,7 @@ void Renderer::drawLine(int x1, int y1, int x2, int y2)
   int e = 2*dy - dx;
   int a = 2*dy;
   int b = 2*dy - 2*dx;
-  //dis->setPixel(x, y, true);
+  dis->setPixel(x, y, true);
 
   for (int i = 1; i <= dx; i++)
   {

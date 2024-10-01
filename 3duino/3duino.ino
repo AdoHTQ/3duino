@@ -1,10 +1,11 @@
 #include "DisplayDriver.h" 
 #include "Renderer.h"
+#include "Vectors.h"
 
 DisplayDriver* dis;
 Renderer* renderer;
 
-bool isSetup;
+bool isSetup = false;
 
 void setup()
 {
@@ -18,11 +19,9 @@ void setup()
   
 void loop()
 {
-  //if (!isSetup) return;
+  if (!isSetup) return;
   //dis -> clearScreen();
-  Serial.println("a");
-  renderer->drawLine(15, 15, 14, 14);
-  Serial.println("b");
+  renderer->drawLine(15, 15, 11, 4);
   dis -> renderDisplay();
   delay(1000);
 }

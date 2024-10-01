@@ -23,7 +23,6 @@
 //   }
 // };
 
-
 class Renderer {
 private:
   DisplayDriver* dis;
@@ -31,11 +30,13 @@ private:
   int sign(int);
 
 public:
-  Renderer(DisplayDriver* dis);
+  Renderer(DisplayDriver*);
 
   void drawLine(int, int, int, int);
 
   //void renderMesh(Mesh mesh);
 };
+
+
 
 #endif

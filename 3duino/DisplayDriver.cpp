@@ -70,7 +70,7 @@ void DisplayDriver::clearScreen()
   for (int i = 0; i < resX; i++) 
   {
     for (int j = 0; j < resY; j++) {
-        buffer[i][j] = false;
+      buffer[i][j] = false;
     }
   }
   renderDisplay();
@@ -120,7 +120,7 @@ void DisplayDriver::renderDisplay() {
       sendDataLow(i + 1, boolsToByte(byte));
     }
     digitalWrite(cs, HIGH);
-    delete[] bytes; // memory safety :)
+    //delete[]* bytes; // memory safety :)
 
 
     // for (int i = 0; i < resX; i++) {
