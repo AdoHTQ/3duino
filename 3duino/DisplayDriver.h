@@ -40,6 +40,8 @@ public:
 
   void clearScreen();
 
+  void clearBuffer();
+
   void setPixel(uint8_t, uint8_t, bool);
 
   void testDisplay();

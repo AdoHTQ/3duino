@@ -27,12 +27,12 @@ class Renderer {
 private:
   DisplayDriver* dis;
 
-  int sign(int);
+  void drawLine(int, int, int, int);
 
 public:
   Renderer(DisplayDriver*);
 
-  void drawLine(int, int, int, int);
+  
 
   //void renderMesh(Mesh mesh);
 };

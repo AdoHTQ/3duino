@@ -14,14 +14,17 @@ void setup()
   dis = new DisplayDriver(0x10, 0x10);
   renderer = new Renderer(dis);
 
+  dis->clearScreen();
+
   isSetup = true;
 }
-  
+
 void loop()
 {
   if (!isSetup) return;
-  //dis -> clearScreen();
-  renderer->drawLine(15, 15, 11, 4);
+
+  dis -> clearBuffer();
+  
   dis -> renderDisplay();
-  delay(1000);
+  delay(100);
 }

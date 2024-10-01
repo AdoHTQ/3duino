@@ -67,13 +67,19 @@ void DisplayDriver::sendDataLow(uint8_t address, uint8_t din) {
 // clears all displays
 void DisplayDriver::clearScreen()
 {
+  clearBuffer();
+  renderDisplay();
+}
+
+
+void DisplayDriver::clearBuffer()
+{
   for (int i = 0; i < resX; i++) 
   {
     for (int j = 0; j < resY; j++) {
       buffer[i][j] = false;
     }
   }
-  renderDisplay();
 }
 
 void DisplayDriver::setPixel(uint8_t x, uint8_t y, bool state)
@@ -120,8 +126,8 @@ void DisplayDriver::renderDisplay() {
       sendDataLow(i + 1, boolsToByte(byte));
     }
     digitalWrite(cs, HIGH);
-    //delete[]* bytes; // memory safety :)
 
+    // memory safety :)
 
     // for (int i = 0; i < resX; i++) {
     //   for (int j = 0; j < resY; j++) {
