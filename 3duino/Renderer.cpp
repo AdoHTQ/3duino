@@ -76,7 +76,7 @@ Vector2I Renderer::transformVertex(Vector3* vertex)
 void Renderer::renderMesh(Mesh *mesh)
 {
   //Loop over each face
-  for (int i = 0; i < sizeof(mesh->faces)/sizeof(mesh->faces[0]); i++)
+  for (int i = 0; i <= sizeof(&mesh->faces)/sizeof(&mesh->faces[0]); i++)
   {
     Vector2I p1 = transformVertex(&mesh->vertices[mesh->faces[i].x]);
     Vector2I p2 = transformVertex(&mesh->vertices[mesh->faces[i].y]);

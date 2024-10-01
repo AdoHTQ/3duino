@@ -7,7 +7,7 @@ Renderer* renderer;
 
 bool isSetup = false;
 
-Mesh* tri = new Mesh(3, 1);
+Mesh* tri = new Mesh(4, 2);
 
 void setup()
 {
@@ -20,7 +20,9 @@ void setup()
   tri->vertices[0] = Vector3(15, 15, 0);
   tri->vertices[1] = Vector3(8, 15, 0);
   tri->vertices[2] = Vector3(15, 8, 0);
+  tri->vertices[3] = Vector3(8, 8, 0);
   tri->faces[0] = Vector3I(0, 1, 2);
+  tri->faces[1] = Vector3I(1, 2, 3);
 
   isSetup = true;
 }
