@@ -8,11 +8,15 @@
 struct Mesh {
   Vector3* vertices;
   Vector3I* faces;
+
+  int numVertices;
+  int numFaces;
+
   //uint8_t* color;
 
   Mesh (int, int);
 
-  Mesh (Vector3*, Vector3I*);
+  Mesh (Vector3*, Vector3I*, int, int);
 
   ~Mesh();
 

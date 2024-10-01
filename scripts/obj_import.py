@@ -52,19 +52,19 @@ with open(path, "r") as file:
 
 
     output += "// vertex array\n"
-    output += "Vector3* vectors[] = {"
+    output += "Vector3 vectors[] = {"
     for vector in vectors:
-        output += f"new Vector3({float(vector[0])}, {float(vector[1])}, {float(vector[2])}),"
+        output += f"Vector3({float(vector[0])}, {float(vector[1])}, {float(vector[2])}),"
     output += "};\n"
 
     output += "// face array\n"
-    output += "Vector3I* faces[] = {"
+    output += "Vector3I faces[] = {"
     for face in faces:
-        output += f"new Vector3I({int(face[0])}, {int(face[1])}, {int(face[2])}),"
+        output += f"Vector3I({int(face[0])}, {int(face[1])}, {int(face[2])}),"
     output += "};\n"
 
     output += "// final mesh object\n"
-    output += f"Mesh {name.lower()}(vectors, faces);"
+    output += f"Mesh {name.lower()}(vectors, faces, {len(vectors)}, {len(faces)});"
 
 
 
