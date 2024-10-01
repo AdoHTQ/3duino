@@ -67,3 +67,21 @@ void Renderer::drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3)
   drawLine(p3, p1);
 }
 
+Vector2I Renderer::transformVertex(Vector3* vertex)
+{
+  // Orthographic projection
+  return Vector2I(round(vertex->x), round(vertex->y));
+}
+
+void Renderer::renderMesh(Mesh *mesh)
+{
+  //Loop over each face
+  for (int i = 0; i < sizeof(mesh->faces)/sizeof(mesh->faces[0]); i++)
+  {
+    Vector2I p1 = transformVertex(&mesh->vertices[mesh->faces[i].x]);
+    Vector2I p2 = transformVertex(&mesh->vertices[mesh->faces[i].y]);
+    Vector2I p3 = transformVertex(&mesh->vertices[mesh->faces[i].z]);
+    drawTriangle(&p1, &p2, &p3);
+  }
+}
+

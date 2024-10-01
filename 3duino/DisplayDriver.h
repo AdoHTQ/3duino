@@ -2,6 +2,7 @@
 #define DISPLAYDRIVER_H
 
 #include <Arduino.h>
+#include "Vectors.h"
 
 /*
 
@@ -37,6 +38,7 @@ private:
 
 public:
   DisplayDriver(uint8_t resolutionX, uint8_t resolutionY);
+  ~DisplayDriver();
 
   void clearScreen();
 

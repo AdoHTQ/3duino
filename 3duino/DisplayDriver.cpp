@@ -1,15 +1,16 @@
 #include "DisplayDriver.h"
+#include "Vectors.h"
 
 DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
 {
-  if (resX != resY || resX % 0x08 != 0x00 || resY % 0x08 != 0x00) {Serial.println("invalid arguments");}
-  this -> resX = resolutionX;
-  this -> resY = resolutionY;
+  if (resolutionX != resolutionY || resolutionX % 0x08 != 0x00 || resolutionY % 0x08 != 0x00) {Serial.println("invalid arguments");}
+  resX = resolutionX;
+  resY = resolutionY;
 
-  buffer = new bool*[resolutionX];
+  buffer = new bool*[resX];
 
   for (int i = 0; i < resolutionX; i++) {
-    buffer[i] = new bool[resolutionY];
+    buffer[i] = new bool[resY];
   //   for (int j = 0; j < resolutionY; j++) {
   // //     // makes a random pattern as a test render
   // //     buffer[i][j] = i > 3 && i < 12 && j > 3 && j < 12;
