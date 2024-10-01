@@ -10,17 +10,12 @@ struct Mesh {
   Vector3I* faces;
   //uint8_t* color;
 
+  Mesh (int, int);
 
-  Mesh (int numVertices, int numFaces)
-  {
-    vertices = new Vector3[numVertices];
-    faces = new Vector3I[numFaces];
-  }
+  Mesh (Vector3*, Vector3I*);
 
-  ~Mesh() {
-    delete[] vertices;
-    delete[] faces;
-  }
+  ~Mesh();
+
 };
 
 class Renderer {

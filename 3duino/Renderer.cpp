@@ -1,5 +1,23 @@
 #include "Renderer.h" 
 
+Mesh::Mesh (int numVertices, int numFaces)
+{
+  vertices = new Vector3[numVertices];
+  faces = new Vector3I[numFaces];
+}
+
+Mesh::Mesh (Vector3* vertices, Vector3I* faces) {
+  this -> vertices = vertices;
+  this -> faces = faces;
+}
+
+Mesh::~Mesh() {
+  delete[] vertices;
+  delete[] faces;
+}
+
+
+
 Renderer::Renderer(DisplayDriver* dis)
 {
   this->dis = dis;
