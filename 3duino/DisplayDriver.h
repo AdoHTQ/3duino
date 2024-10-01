@@ -38,7 +38,6 @@ private:
 
 public:
   DisplayDriver(uint8_t resolutionX, uint8_t resolutionY);
-  ~DisplayDriver();
 
   void clearScreen();
 
