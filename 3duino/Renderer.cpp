@@ -13,7 +13,6 @@ Mesh::Mesh (Vector3* vertices, Vector3I* faces, int numVertices, int numFaces) {
   this -> faces = faces;
   this -> numVertices = numVertices;
   this -> numFaces = numFaces;
-
 }
 
 Mesh::~Mesh() {
@@ -26,6 +25,13 @@ Mesh::~Mesh() {
 Renderer::Renderer(DisplayDriver* dis)
 {
   this->dis = dis;
+
+  projection = new Matrix44();
+}
+
+Renderer::~Renderer()
+{
+  delete projection;
 }
 
 int sign(int value)
@@ -92,14 +98,16 @@ void Renderer::drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3)
 
 Vector2I Renderer::transformVertex(Vector3* vertex)
 {
+  Vector4 homogenous = Vector4(vertex->x, vertex->y, vertex->z, 1);
+  homogenous = *projection * homogenous;
   // Orthographic projection
-  return Vector2I(round(vertex->x), round(vertex->y));
+  return Vector2I(round((homogenous.x + 1) * (15.0/2.0)), round((homogenous.y + 1) * (15.0/2.0)));
 }
 
 void Renderer::renderMesh(Mesh *mesh)
 {
   //Loop over each face
-  for (int i = 0; i <= sizeof(&mesh->faces)/sizeof(&mesh->faces[0]); i++)
+  for (int i = 0; i <= mesh->numFaces; i++)
   {
     Vector2I p1 = transformVertex(&mesh->vertices[mesh->faces[i].x]);
     Vector2I p2 = transformVertex(&mesh->vertices[mesh->faces[i].y]);

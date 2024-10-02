@@ -85,6 +85,7 @@ void DisplayDriver::clearBuffer()
 
 void DisplayDriver::setPixel(uint8_t x, uint8_t y, bool state)
 {
+  if (x >= resX || x < 0 || y >= resY || y < 0) return;
   buffer[x][y] = state;
 }
 

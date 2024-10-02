@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "Vectors.h"
 #include "DisplayDriver.h"
+#include "Matrix.h"
 
 struct Mesh {
   Vector3* vertices;
@@ -25,6 +26,7 @@ struct Mesh {
 class Renderer {
 private:
   DisplayDriver* dis;
+  Matrix44* projection;
 
   void drawLine(int x1, int y1, int x2, int y2);
   void drawLine(Vector2I* p1, Vector2I* p2);
@@ -35,6 +37,7 @@ private:
 
 public:
   Renderer(DisplayDriver* displayDriver);
+  ~Renderer();
 
   void renderMesh(Mesh* mesh);
 };
