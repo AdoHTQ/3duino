@@ -28,6 +28,11 @@ private:
   DisplayDriver* dis;
   Matrix44* projection;
 
+  const float fov = PI / 2;
+  const float aspect = 1;
+  const float far = 10;
+  const float near = 0.01;
+
   void drawLine(int x1, int y1, int x2, int y2);
   void drawLine(Vector2I* p1, Vector2I* p2);
 
