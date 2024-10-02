@@ -39,4 +39,26 @@ public:
   Vector3I(int x, int y, int z);
 };
 
+class Vector4 {
+public:
+  float x;
+  float y;
+  float z;
+  float w;
+
+  Vector4();
+  Vector4(float x, float y, float z, float w);
+};
+
+class Vector4I {
+public:
+  int x;
+  int y;
+  int z;
+  int w;
+
+  Vector4I();
+  Vector4I(int x, int y, int z, int w);
+};
+
 #endif
