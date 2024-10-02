@@ -30,5 +30,4 @@ Vector4 Matrix44::operator*(const Vector4& vector) {
   float z = elements[2][0] * vector.x + elements[2][1] * vector.y + elements[2][2] * vector.z + elements[2][3] * vector.w;
   float w = elements[3][0] * vector.x + elements[3][1] * vector.y + elements[3][2] * vector.z + elements[3][3] * vector.w;
   return Vector4(x, y, z, w);
-
 }

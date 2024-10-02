@@ -26,17 +26,14 @@ Renderer::Renderer(DisplayDriver* dis)
 {
   this->dis = dis;
 
-  projection = new Matrix44();
-  projection->setElement(0, 0, 1 / (aspect * tan(fov / 2)));
-  projection->setElement(1, 1, 1 / tan(fov / 2));
-  projection->setElement(2, 2, far / (far-near));
-  projection->setElement(2, 3, (-far * near) / (far - near));
-  projection->setElement(3, 2, 1);
-}
+  projection = Matrix44();
+  projection.setElement(0, 0, 1 / (aspect * tan(fov / 2)));
+  projection.setElement(1, 1, 1 / tan(fov / 2));
+  projection.setElement(2, 2, far / (far-near));
+  projection.setElement(2, 3, (-far * near) / (far - near));
+  projection.setElement(3, 2, 1);
 
-Renderer::~Renderer()
-{
-  delete projection;
+  Serial.println(transformVertex(&Vector3(1, 1, 2)).x);
 }
 
 int sign(int value)
@@ -104,12 +101,9 @@ void Renderer::drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3)
 Vector2I Renderer::transformVertex(Vector3* vertex)
 {
   Vector4 homogenous = Vector4(vertex->x, vertex->y, vertex->z, 1);
-  homogenous = *projection * homogenous;
-  homogenous.x /= homogenous.w;
-  homogenous.y /= homogenous.w;
-  homogenous.z /= homogenous.w;
+  homogenous = projection * homogenous;
   // Orthographic projection
-  return Vector2I(round((homogenous.x + 1) * (15.0/2.0)), round((homogenous.y + 1) * (15.0/2.0)));
+  return Vector2I(round((homogenous.x / homogenous.w + 1) * (15.0/2.0)), round((homogenous.y / homogenous.w + 1) * (15.0/2.0)));
 }
 
 void Renderer::renderMesh(Mesh *mesh)
