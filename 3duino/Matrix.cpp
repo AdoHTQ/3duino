@@ -16,11 +16,11 @@ Matrix44::Matrix44(float elements[4][4]) {
   }
 }
 
-float Matrix44::getElement(int x, int y) {
-  return elements[x][y];
+float Matrix44::getElement(int r, int c) {
+  return elements[r][c];
 }
-void Matrix44::setElement(int x, int y, float value) {
-  elements[x][y] = value;
+void Matrix44::setElement(int r, int c, float value) {
+  elements[r][c] = value;
 }
 
 
