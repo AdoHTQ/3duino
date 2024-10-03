@@ -131,15 +131,20 @@ void DisplayDriver::renderDisplay() {
 
     // memory safety :)
 
-    // for (int i = 0; i < resX; i++) {
-    //   for (int j = 0; j < resY; j++) {
-    //     if (buffer[i][j]) {
-    //       //Serial.write("O");
-    //     } else {
-    //       //Serial.write("X");
-    //     }
-    //   }
-    //   //Serial.write("\n");
-    // }
-  }
+    //Kinda cursed but I wanted an easy way to turn this on and off
+    if (true)
+    {
+      for (int i = 0; i < resX; i++) {
+        for (int j = 0; j < resY; j++) {
+          if (buffer[i][j]) {
+            Serial.write("O");
+          } else {
+            Serial.write(" ");
+          }
+        }
+        Serial.write("\n");
+      }
+      Serial.println();
+    }
+  }  
 }

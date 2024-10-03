@@ -28,7 +28,7 @@ private:
   DisplayDriver* dis;
   Matrix44 projection;
 
-  const float fov = PI / 2.;
+  float fov = 30 / 57.2957795;
   const float aspect = 1.;
   const float far = 10.;
   const float near = 0.1;
@@ -38,6 +38,7 @@ private:
 
   void drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3);
 
+  void createProjectionMatrix();
   Vector2I transformVertex(Vector3* vertex);
 
 public:
