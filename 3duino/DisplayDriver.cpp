@@ -1,7 +1,7 @@
 #include "DisplayDriver.h"
 #include "Vectors.h"
 
-DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
+MAXDisplayDriver::MAXDisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
 {
   if (resolutionX != resolutionY || resolutionX % 0x08 != 0x00 || resolutionY % 0x08 != 0x00) {Serial.println("invalid arguments");}
   resX = resolutionX;
@@ -11,18 +11,6 @@ DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolution
 
   for (int i = 0; i < resolutionX; i++) {
     buffer[i] = new bool[resY];
-  //   for (int j = 0; j < resolutionY; j++) {
-  // //     // makes a random pattern as a test render
-  // //     buffer[i][j] = i > 3 && i < 12 && j > 3 && j < 12;
-
-  // //     // prints the state of the buffer for debugging
-  //     if (buffer[i][j]) {
-  //       Serial.write("O");
-  //     } else {
-  //       Serial.write("X");
-  //     }
-  //   }
-  //   Serial.write("\n");
   }
 
 
@@ -50,7 +38,7 @@ DisplayDriver::DisplayDriver(const uint8_t resolutionX, const uint8_t resolution
   clearScreen();
 }
 
-void DisplayDriver::sendData(uint8_t address, uint8_t din) {
+void MAXDisplayDriver::sendData(uint8_t address, uint8_t din) {
   digitalWrite(clock, LOW);
   digitalWrite(cs, LOW);
   shiftOut(data, clock, MSBFIRST, address);
@@ -60,20 +48,20 @@ void DisplayDriver::sendData(uint8_t address, uint8_t din) {
 
 // sends data, but doesn't interact with the CS pin
 // this should be used for daisy-chaining
-void DisplayDriver::sendDataLow(uint8_t address, uint8_t din) {
+void MAXDisplayDriver::sendDataLow(uint8_t address, uint8_t din) {
   shiftOut(data, clock, MSBFIRST, address);
   shiftOut(data, clock, MSBFIRST, din);
 }
 
 // clears all displays
-void DisplayDriver::clearScreen()
+void MAXDisplayDriver::clearScreen()
 {
   clearBuffer();
   renderDisplay();
 }
 
 
-void DisplayDriver::clearBuffer()
+void MAXDisplayDriver::clearBuffer()
 {
   for (int i = 0; i < resX; i++) 
   {
@@ -83,14 +71,14 @@ void DisplayDriver::clearBuffer()
   }
 }
 
-void DisplayDriver::setPixel(uint8_t x, uint8_t y, bool state)
+void MAXDisplayDriver::setPixel(int x, int y, bool state)
 {
   if (x >= resX || x < 0 || y >= resY || y < 0) return;
   buffer[x][y] = state;
 }
 
 // we might not need this anymore
-void DisplayDriver::drawColumn(uint8_t column, uint8_t value)
+void MAXDisplayDriver::drawColumn(uint8_t column, uint8_t value)
 {
   //Don't draw the column if it isn't a display register
   if (column < 0b0000 || column > 0b0111) return;
@@ -99,7 +87,7 @@ void DisplayDriver::drawColumn(uint8_t column, uint8_t value)
 }
 
 // converts the first 8 boolean values in an array to a byte
-uint8_t DisplayDriver::boolsToByte(const bool *bits) {
+uint8_t MAXDisplayDriver::boolsToByte(const bool *bits) {
   uint8_t byte = 0;
     for (int i = 0; i < 8; i++) {
       if (bits[i]) {
@@ -110,7 +98,7 @@ uint8_t DisplayDriver::boolsToByte(const bool *bits) {
 }
 
 // renders whatever content is currently in the buffer
-void DisplayDriver::renderDisplay() {
+void MAXDisplayDriver::renderDisplay() {
 
   // loops through half of the columns in the buffer
   for (int i = 0; i < resY / 2; i++) {
