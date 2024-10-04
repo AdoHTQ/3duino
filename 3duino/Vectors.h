@@ -1,10 +1,15 @@
 #ifndef VECTORS_H
 #define VECTORS_H
 
-class Vector {
+class VectorABC {
 public:
-
     int numVerteces;
+
+    bool checkType(int);
+};
+
+class Vector: public VectorABC {
+public:
 
     float* verteces;
     
@@ -16,10 +21,8 @@ public:
   ~Vector();
 };
 
-class VectorI {
+class VectorI: public VectorABC {
 public:
-
-    int numVerteces;
 
     int* verteces;
 

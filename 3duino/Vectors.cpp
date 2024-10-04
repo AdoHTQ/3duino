@@ -1,5 +1,9 @@
 #include "Vectors.h"
 
+bool VectorABC::checkType(int type) {
+    return type == numVerteces;
+}
+
 Vector::Vector() {
   numVerteces = 4;
   verteces = new float[numVerteces];
