@@ -27,6 +27,9 @@ with open(path, "r") as file:
     vectors = []
     faces = []
 
+    vector_count = -1
+    face_count = -1
+
     while (file):
         line = file.readline()
         if line == "":
@@ -44,6 +47,7 @@ with open(path, "r") as file:
                     line = line[line.find(" ") + 1:]
                     # python ternary operator :)
                     (minivectors if tmp == "v" else minifaces).append(line[:line.find(" ")])
+
         if len(minivectors) > 0:
             vectors.append(minivectors)
 
@@ -52,16 +56,27 @@ with open(path, "r") as file:
 
 
     output += "// vertex array\n"
-    output += "Vector3 vectors[] = {"
+    output += f"Vector{len(vectors[0])} vectors[] = " + "{"
     for vector in vectors:
-        output += f"Vector3({float(vector[0])}, {float(vector[1])}, {float(vector[2])}),"
+        output += f"Vector{len(vector)}("
+        for index, vertex in enumerate(vector):
+            output += f"{float(vertex)}"
+            if not index == len(vector) - 1:
+                output += ", "
+        output += "),"
     output += "};\n"
 
     output += "// face array\n"
-    output += "Vector3I faces[] = {"
+    output += f"Vector{len(faces[0])}I faces[] = " + "{"
     for face in faces:
-        output += f"Vector3I({int(face[0])}, {int(face[1])}, {int(face[2])}),"
+        output += f"Vector{len(face)}I("
+        for index, vertex in enumerate(face):
+            output += f"{int(vertex)}"
+            if not index == len(face) - 1:
+                output += ", "
+        output += "),"
     output += "};\n"
+
 
     output += "// final mesh object\n"
     output += f"Mesh {name.lower()}(vectors, faces, {len(vectors)}, {len(faces)});"
