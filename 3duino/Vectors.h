@@ -3,7 +3,7 @@
 
 class VectorABC {
 public:
-    int numVerteces;
+    int axisCount;
 
     bool checkType(int);
 };
@@ -11,12 +11,14 @@ public:
 class Vector: public VectorABC {
 public:
 
-    float* verteces;
-    
-    Vector();
-    Vector(float, float);
-    Vector(float, float, float);
+  float* axes;
+  
+  Vector();
+  Vector(float, float);
+  Vector(float, float, float);
   Vector(float, float, float, float);
+
+  float operator[](int index);
 
   ~Vector();
 };
@@ -24,14 +26,16 @@ public:
 class VectorI: public VectorABC {
 public:
 
-    int* verteces;
+  int* axes;
 
-    VectorI();
-    VectorI(int, int);
-    VectorI(int, int, int);
-    VectorI(int, int, int, int);
+  VectorI();
+  VectorI(int, int);
+  VectorI(int, int, int);
+  VectorI(int, int, int, int);
 
-    ~VectorI();
+  int operator[](int index);
+
+  ~VectorI();
 };
 
 #endif

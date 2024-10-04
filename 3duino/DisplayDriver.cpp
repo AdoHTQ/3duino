@@ -132,7 +132,7 @@ void DisplayDriver::renderDisplay() {
     // memory safety :)
 
     //Kinda cursed but I wanted an easy way to turn this on and off
-    if (true)
+    if (false)
     {
       for (int i = 0; i < resX; i++) {
         for (int j = 0; j < resY; j++) {

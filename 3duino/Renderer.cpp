@@ -93,27 +93,27 @@ void Renderer::drawLine(int x1, int y1, int x2, int y2)
   }
 }
 
-void Renderer::drawLine(VectorI* p1, VectorI* p2)
+void Renderer::drawLine(VectorI p1, VectorI p2)
 {
-  drawLine(p1->verteces[0], p1->verteces[1], p2->verteces[0], p2->verteces[1]);
+  drawLine(p1[0], p1[1], p2[0], p2[1]);
 }
 
-void Renderer::drawTriangle(VectorI* p1, VectorI* p2, VectorI* p3)
+void Renderer::drawTriangle(VectorI p1, VectorI p2, VectorI p3)
 {
   drawLine(p1, p2);
   drawLine(p2, p3);
   drawLine(p3, p1);
 }
 
-VectorI Renderer::transformVertex(Vector* vertex)
+VectorI Renderer::transformVertex(Vector vertex)
 {
-  if (vertex->numVerteces < 4) {return VectorI();}
-  Vector homogenous = Vector(vertex->verteces[0], vertex->verteces[1], vertex->verteces[2], 1.0);
+  if (vertex.axisCount < 4) {return VectorI();}
+  Vector homogenous = Vector(vertex[0], vertex[1], vertex[2], 1.0);
   //homogenous.y -= 0.2;
   homogenous = projection * homogenous;
   // Orthographic projection
   //Serial.println(homogenous.x / homogenous.w);
-  return VectorI(round((homogenous.verteces[0] / homogenous.verteces[3] + 1.0) * (15.0/2.0)), round((homogenous.verteces[1] / homogenous.verteces[3] + 1.0) * (15.0/2.0)));
+  return VectorI(round((homogenous[0] / homogenous[3] + 1.0) * (15.0/2.0)), round((homogenous[1] / homogenous[3] + 1.0) * (15.0/2.0)));
 }
 
 void Renderer::renderMesh(Mesh *mesh)
@@ -133,10 +133,11 @@ void Renderer::renderMesh(Mesh *mesh)
   for (int i = 0; i < mesh->numFaces; i++)
   {
     //Vector3 transform = Vector3(0.0, 0.0, 0.0);
-    VectorI p1 = transformVertex(&mesh->vertices[mesh->faces[i].verteces[0]]);
-    VectorI p3 = transformVertex(&mesh->vertices[mesh->faces[i].verteces[1]]);
-    VectorI p2 = transformVertex(&mesh->vertices[mesh->faces[i].verteces[2]]);
-    drawTriangle(&p1, &p2, &p3);
+    VectorI p1 = transformVertex(mesh->vertices[mesh->faces[i][0]]);
+    VectorI p3 = transformVertex(mesh->vertices[mesh->faces[i][1]]);
+    VectorI p2 = transformVertex(mesh->vertices[mesh->faces[i][2]]);
+    //Serial.println(p1[0]);
+    drawTriangle(p1, p2, p3);
   }
 }
 
