@@ -56,9 +56,9 @@ with open(path, "r") as file:
 
 
     output += "// vertex array\n"
-    output += f"Vector{len(vectors[0])} vectors[] = " + "{"
+    output += f"Vector vectors[] = " + "{"
     for vector in vectors:
-        output += f"Vector{len(vector)}("
+        output += f"Vector("
         for index, vertex in enumerate(vector):
             output += f"{float(vertex)}"
             if not index == len(vector) - 1:
@@ -67,9 +67,9 @@ with open(path, "r") as file:
     output += "};\n"
 
     output += "// face array\n"
-    output += f"Vector{len(faces[0])}I faces[] = " + "{"
+    output += f"VectorI faces[] = " + "{"
     for face in faces:
-        output += f"Vector{len(face)}I("
+        output += f"VectorI("
         for index, vertex in enumerate(face):
             output += f"{int(vertex)}"
             if not index == len(face) - 1:

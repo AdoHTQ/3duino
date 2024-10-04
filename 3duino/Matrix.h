@@ -17,7 +17,7 @@ public:
   float getElement(int x, int y);
   void setElement(int x, int y, float value);
 
-  Vector4 operator*(const Vector4& vector);
+  Vector operator*(const Vector& vector);
 };
 
 #endif

@@ -7,8 +7,8 @@
 #include "Matrix.h"
 
 struct Mesh {
-  Vector3* vertices;
-  Vector3I* faces;
+  Vector* vertices;
+  VectorI* faces;
 
   int numVertices;
   int numFaces;
@@ -17,7 +17,7 @@ struct Mesh {
 
   Mesh (int, int);
 
-  Mesh (Vector3*, Vector3I*, int, int);
+  Mesh (Vector*, VectorI*, int, int);
 
   ~Mesh();
 
@@ -34,12 +34,12 @@ private:
   const float near = 0.1;
 
   void drawLine(int x1, int y1, int x2, int y2);
-  void drawLine(Vector2I* p1, Vector2I* p2);
+  void drawLine(VectorI* p1, VectorI* p2);
 
-  void drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3);
+  void drawTriangle(VectorI* p1, VectorI* p2, VectorI* p3);
 
   void createProjectionMatrix();
-  Vector2I transformVertex(Vector3* vertex);
+  VectorI transformVertex(Vector* vertex);
 
 public:
   Renderer(DisplayDriver* displayDriver);

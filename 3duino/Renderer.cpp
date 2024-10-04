@@ -2,13 +2,13 @@
 
 Mesh::Mesh (int numVertices, int numFaces)
 {
-  vertices = new Vector3[numVertices];
-  faces = new Vector3I[numFaces];
+  vertices = new Vector[numVertices];
+  faces = new VectorI[numFaces];
   this -> numVertices = numVertices;
   this -> numFaces = numFaces;
 }
 
-Mesh::Mesh (Vector3* vertices, Vector3I* faces, int numVertices, int numFaces) {
+Mesh::Mesh (Vector* vertices, VectorI* faces, int numVertices, int numFaces) {
   this -> vertices = vertices;
   this -> faces = faces;
   this -> numVertices = numVertices;
@@ -93,26 +93,27 @@ void Renderer::drawLine(int x1, int y1, int x2, int y2)
   }
 }
 
-void Renderer::drawLine(Vector2I* p1, Vector2I* p2)
+void Renderer::drawLine(VectorI* p1, VectorI* p2)
 {
-  drawLine(p1->x, p1->y, p2->x, p2->y);
+  drawLine(p1->verteces[0], p1->verteces[1], p2->verteces[0], p2->verteces[1]);
 }
 
-void Renderer::drawTriangle(Vector2I* p1, Vector2I* p2, Vector2I* p3)
+void Renderer::drawTriangle(VectorI* p1, VectorI* p2, VectorI* p3)
 {
   drawLine(p1, p2);
   drawLine(p2, p3);
   drawLine(p3, p1);
 }
 
-Vector2I Renderer::transformVertex(Vector3* vertex)
+VectorI Renderer::transformVertex(Vector* vertex)
 {
-  Vector4 homogenous = Vector4(vertex->x, vertex->y, vertex->z, 1.0);
+  if (vertex->numVerteces < 4) {return VectorI();}
+  Vector homogenous = Vector(vertex->verteces[0], vertex->verteces[1], vertex->verteces[2], 1.0);
   //homogenous.y -= 0.2;
   homogenous = projection * homogenous;
   // Orthographic projection
   //Serial.println(homogenous.x / homogenous.w);
-  return Vector2I(round((homogenous.x / homogenous.w + 1.0) * (15.0/2.0)), round((homogenous.y / homogenous.w + 1.0) * (15.0/2.0)));
+  return VectorI(round((homogenous.verteces[0] / homogenous.verteces[3] + 1.0) * (15.0/2.0)), round((homogenous.verteces[1] / homogenous.verteces[3] + 1.0) * (15.0/2.0)));
 }
 
 void Renderer::renderMesh(Mesh *mesh)
@@ -132,9 +133,9 @@ void Renderer::renderMesh(Mesh *mesh)
   for (int i = 0; i < mesh->numFaces; i++)
   {
     //Vector3 transform = Vector3(0.0, 0.0, 0.0);
-    Vector2I p1 = transformVertex(&mesh->vertices[mesh->faces[i].x]);
-    Vector2I p3 = transformVertex(&mesh->vertices[mesh->faces[i].z]);
-    Vector2I p2 = transformVertex(&mesh->vertices[mesh->faces[i].y]);
+    VectorI p1 = transformVertex(&mesh->vertices[mesh->faces[i].verteces[0]]);
+    VectorI p3 = transformVertex(&mesh->vertices[mesh->faces[i].verteces[1]]);
+    VectorI p2 = transformVertex(&mesh->vertices[mesh->faces[i].verteces[2]]);
     drawTriangle(&p1, &p2, &p3);
   }
 }
