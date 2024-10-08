@@ -4,7 +4,7 @@
 
 #include "PlaneMesh.h"
 
-MAXDisplayDriver* dis;
+SSDDisplayDriver* dis;
 Renderer* renderer;
 
 bool isSetup = false;
@@ -13,7 +13,7 @@ void setup()
 {
   Serial.begin(2000000);
 
-  dis = new MAXDisplayDriver(0x10, 0x10);
+  dis = new SSDDisplayDriver(96, 64);
   renderer = new Renderer(dis);
 
   isSetup = true;
@@ -23,8 +23,8 @@ void loop()
 {
   if (!isSetup) return;
 
-  dis -> clearBuffer();
-  renderer -> renderMesh(&plane);
-  dis -> renderDisplay();
+  // dis -> clearBuffer();
+  // renderer -> renderMesh(&plane);
+  // dis -> renderDisplay();
   delay(500);
 }

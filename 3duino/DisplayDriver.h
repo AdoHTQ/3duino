@@ -22,15 +22,15 @@ protected:
 
   bool** buffer;
 public:
-  void clearScreen();
+  virtual void clearScreen();
 
-  void clearBuffer();
+  virtual void clearBuffer();
 
-  void setPixel(int x, int y, bool state);
+  virtual void setPixel(int x, int y, bool state);
 
-  void testDisplay();
+  virtual void testDisplay();
 
-  void renderDisplay();
+  virtual void renderDisplay();
 };
 
 class MAXDisplayDriver : public DisplayDriver {
@@ -62,7 +62,27 @@ public:
 };
 
 class SSDDisplayDriver : public DisplayDriver {
+private:
+  const uint8_t clock = 52;
+  const uint8_t data = 50;
+  const uint8_t reset = 48;
+  const uint8_t command = 46;
+  const uint8_t cs = 44;
 
+  void sendCommand(uint8_t command/*, uint8_t* parameters*/);
+
+public:
+  SSDDisplayDriver(uint8_t resolutionX, uint8_t resolutionY);
+
+  void clearScreen();
+
+  void clearBuffer();
+
+  void setPixel(int x, int y, bool state);
+
+  void testDisplay();
+
+  void renderDisplay();
 };
 
 #endif

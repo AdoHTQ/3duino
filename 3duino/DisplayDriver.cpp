@@ -77,6 +77,11 @@ void MAXDisplayDriver::setPixel(int x, int y, bool state)
   buffer[x][y] = state;
 }
 
+void MAXDisplayDriver::testDisplay()
+{
+  sendData(0x0F, 0x01);
+}
+
 // we might not need this anymore
 void MAXDisplayDriver::drawColumn(uint8_t column, uint8_t value)
 {
@@ -135,4 +140,69 @@ void MAXDisplayDriver::renderDisplay() {
       Serial.println();
     }
   }  
+}
+
+
+
+SSDDisplayDriver::SSDDisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
+{
+  resX = resolutionX;
+  resY = resolutionY;
+
+  buffer = new bool*[resX];
+
+  for (int i = 0; i < resolutionX; i++) {
+    buffer[i] = new bool[resY];
+  }
+
+
+  //Set all pins to output mode
+  pinMode(data, OUTPUT);
+  pinMode(cs, OUTPUT);
+  pinMode(clock, OUTPUT);
+  pinMode(command, OUTPUT);
+  pinMode(reset, OUTPUT);
+  
+  //Reset display
+  digitalWrite(reset, LOW);
+  delay(1000);
+  digitalWrite(reset, HIGH);
+
+  digitalWrite(cs, LOW);
+
+  sendCommand(0xAF);
+  sendCommand(0xA5);
+
+  //Clear screen
+  //clearScreen();
+}
+
+void SSDDisplayDriver::sendCommand(uint8_t command/*, uint8_t* parameters*/)
+{
+  digitalWrite(command, LOW);
+  digitalWrite(cs, LOW);
+  digitalWrite(clock, LOW);
+  shiftOut(data, clock, MSBFIRST, command);
+  digitalWrite(cs, HIGH);
+}
+
+void SSDDisplayDriver::clearScreen()
+{
+
+}
+
+void SSDDisplayDriver::clearBuffer()
+{
+}
+
+void SSDDisplayDriver::setPixel(int x, int y, bool state)
+{
+}
+
+void SSDDisplayDriver::testDisplay()
+{
+}
+
+void SSDDisplayDriver::renderDisplay()
+{
 }
