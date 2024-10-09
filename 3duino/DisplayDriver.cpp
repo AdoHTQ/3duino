@@ -170,21 +170,99 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t resolutionX, const uint8_t reso
 
   digitalWrite(cs, LOW);
 
+
   sendCommand(0xAF);
-  sendCommand(0xA5);
+
+  // There has to be a better way to do this
+
+  // Setup columns
+  sendCommand(0x15, 0xA0, resX);
+  sendCommand(0x15, 0xB0, resY);
+
+  // Setup rows
+  sendCommand(0x75, 0xA0, 0x00);
+  sendCommand(0x75, 0xB0, 0x3F);
 
   //Clear screen
-  //clearScreen();
+  clearScreen();
 }
 
-void SSDDisplayDriver::sendCommand(uint8_t command/*, uint8_t* parameters*/)
+void SSDDisplayDriver::sendData(uint8_t din)
+{
+  digitalWrite(command, HIGH);
+  digitalWrite(cs, LOW);
+  digitalWrite(clock, LOW);
+
+  shiftOut(data, clock, MSBFIRST, din);
+
+  digitalWrite(cs, HIGH);
+}
+
+void SSDDisplayDriver::sendCommand(uint8_t command)
 {
   digitalWrite(command, LOW);
   digitalWrite(cs, LOW);
   digitalWrite(clock, LOW);
+
   shiftOut(data, clock, MSBFIRST, command);
+
   digitalWrite(cs, HIGH);
 }
+
+void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1)
+{
+  digitalWrite(command, LOW);
+  digitalWrite(cs, LOW);
+  digitalWrite(clock, LOW);
+
+  shiftOut(data, clock, MSBFIRST, command);
+  shiftOut(data, clock, MSBFIRST, param1);
+
+  digitalWrite(cs, HIGH);
+}
+
+void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t param2)
+{
+  digitalWrite(command, LOW);
+  digitalWrite(cs, LOW);
+  digitalWrite(clock, LOW);
+
+  shiftOut(data, clock, MSBFIRST, command);
+  shiftOut(data, clock, MSBFIRST, param1);
+  shiftOut(data, clock, MSBFIRST, param2);
+
+  digitalWrite(cs, HIGH);
+}
+
+void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3)
+{
+  digitalWrite(command, LOW);
+  digitalWrite(cs, LOW);
+  digitalWrite(clock, LOW);
+
+  shiftOut(data, clock, MSBFIRST, command);
+  shiftOut(data, clock, MSBFIRST, param1);
+  shiftOut(data, clock, MSBFIRST, param2);
+  shiftOut(data, clock, MSBFIRST, param3);
+
+  digitalWrite(cs, HIGH);
+}
+
+void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4)
+{
+  digitalWrite(command, LOW);
+  digitalWrite(cs, LOW);
+  digitalWrite(clock, LOW);
+
+  shiftOut(data, clock, MSBFIRST, command);
+  shiftOut(data, clock, MSBFIRST, param1);
+  shiftOut(data, clock, MSBFIRST, param2);
+  shiftOut(data, clock, MSBFIRST, param3);
+  shiftOut(data, clock, MSBFIRST, param4);
+
+  digitalWrite(cs, HIGH);
+}
+
 
 void SSDDisplayDriver::clearScreen()
 {
@@ -201,6 +279,7 @@ void SSDDisplayDriver::setPixel(int x, int y, bool state)
 
 void SSDDisplayDriver::testDisplay()
 {
+  sendCommand(0xA5);
 }
 
 void SSDDisplayDriver::renderDisplay()

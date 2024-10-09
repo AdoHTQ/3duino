@@ -69,9 +69,17 @@ private:
   const uint8_t command = 46;
   const uint8_t cs = 44;
 
-  void sendCommand(uint8_t command/*, uint8_t* parameters*/);
+  
+
+  //Yes, I tried to use an array. It's annoying
+  void sendCommand(uint8_t command);
+  void sendCommand(uint8_t command, uint8_t param1);
+  void sendCommand(uint8_t command, uint8_t param1, uint8_t param2);
+  void sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3);
+  void sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4);
 
 public:
+void sendData(uint8_t din);
   SSDDisplayDriver(uint8_t resolutionX, uint8_t resolutionY);
 
   void clearScreen();
