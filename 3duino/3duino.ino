@@ -13,7 +13,7 @@ void setup()
 {
   Serial.begin(2000000);
 
-  dis = new SSDDisplayDriver(96, 64);
+  dis = new SSDDisplayDriver(0, 0, 96, 64);
   renderer = new Renderer(dis);
 
   isSetup = true;
@@ -22,7 +22,7 @@ void setup()
 void loop()
 {
   if (!isSetup) return;
-  dis -> sendData(0xFF);
+  dis -> sendData(0x0F);
 
   // dis -> clearBuffer();
   // renderer -> renderMesh(&plane);

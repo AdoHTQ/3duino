@@ -80,7 +80,7 @@ private:
 
 public:
 void sendData(uint8_t din);
-  SSDDisplayDriver(uint8_t resolutionX, uint8_t resolutionY);
+  SSDDisplayDriver(uint8_t x, uint8_t y, uint8_t resolutionX, uint8_t resolutionY);
 
   void clearScreen();
 

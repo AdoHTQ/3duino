@@ -144,10 +144,10 @@ void MAXDisplayDriver::renderDisplay() {
 
 
 
-SSDDisplayDriver::SSDDisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
+SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8_t resolutionX, const uint8_t resolutionY) 
 {
-  resX = resolutionX;
-  resY = resolutionY;
+  resX = resolutionX - 1;
+  resY = resolutionY - 1;
 
   buffer = new bool*[resX];
 
@@ -171,23 +171,39 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t resolutionX, const uint8_t reso
   digitalWrite(cs, LOW);
 
 
-  sendCommand(0xAF);
+ 
+  // these are some more commands that I tried, it borked the display when I tried it tho.
+
+  /*
+  sendCommand(0xAE);
+  sendCommand(0xA0);
+  sendCommand(0x72);
+
+  sendCommand(0xAD);
+  sendCommand(0x8E);
+
+  sendCommand(0xB3);
+  sendCommand(0xF0);
+
+  sendCommand(0xA4);
+  sendCommand(0xA8);
+  sendCommand(0x3F);
+  */
 
   // There has to be a better way to do this
 
   // Setup columns
-  //sendCommand(0x15, 0xA0, 0x00);
   sendCommand(0x15);
-  sendCommand(0xA0);
-  sendCommand(0x00);
-  //sendCommand(0x15, 0xB0, resX);
-  sendCommand(0x15);
-  sendCommand(0xB0);
-  sendCommand(resX);
+  sendCommand(x);
+  sendCommand(resX + x);
 
   // Setup rows
-  //sendCommand(0x75, 0xA0, 0x00);
-  //sendCommand(0x75, 0xB0, resY);
+  sendCommand(0x75);
+  sendCommand(y);
+  sendCommand(resY + y);
+  
+  // turn on display last
+  sendCommand(0xAF);
 
   //Clear screen
   clearScreen();
@@ -198,6 +214,7 @@ void SSDDisplayDriver::sendData(uint8_t din)
   digitalWrite(command, HIGH);
   digitalWrite(cs, LOW);
   digitalWrite(clock, LOW);
+
 
   shiftOut(data, clock, MSBFIRST, din);
 
