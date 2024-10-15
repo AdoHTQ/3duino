@@ -176,12 +176,18 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t resolutionX, const uint8_t reso
   // There has to be a better way to do this
 
   // Setup columns
-  sendCommand(0x15, 0xA0, resX);
-  sendCommand(0x15, 0xB0, resY);
+  //sendCommand(0x15, 0xA0, 0x00);
+  sendCommand(0x15);
+  sendCommand(0xA0);
+  sendCommand(0x00);
+  //sendCommand(0x15, 0xB0, resX);
+  sendCommand(0x15);
+  sendCommand(0xB0);
+  sendCommand(resX);
 
   // Setup rows
-  sendCommand(0x75, 0xA0, 0x00);
-  sendCommand(0x75, 0xB0, 0x3F);
+  //sendCommand(0x75, 0xA0, 0x00);
+  //sendCommand(0x75, 0xB0, resY);
 
   //Clear screen
   clearScreen();

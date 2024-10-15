@@ -63,11 +63,11 @@ public:
 
 class SSDDisplayDriver : public DisplayDriver {
 private:
-  const uint8_t clock = 52;
-  const uint8_t data = 50;
-  const uint8_t reset = 48;
-  const uint8_t command = 46;
-  const uint8_t cs = 44;
+  const uint8_t clock = 13;
+  const uint8_t data = 11;
+  const uint8_t reset = 9;
+  const uint8_t command = 8;
+  const uint8_t cs = 10;
 
   
 

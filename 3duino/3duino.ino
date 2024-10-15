@@ -27,5 +27,5 @@ void loop()
   // dis -> clearBuffer();
   // renderer -> renderMesh(&plane);
   // dis -> renderDisplay();
-  delay(500);
+  delay(5);
 }
