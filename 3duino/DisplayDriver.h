@@ -20,7 +20,6 @@ protected:
   uint8_t resX;
   uint8_t resY;
 
-  bool** buffer;
 public:
   virtual void clearScreen();
 
@@ -35,6 +34,7 @@ public:
 
 class MAXDisplayDriver : public DisplayDriver {
 private:
+  bool** buffer;
   const uint8_t clock = 44;
   const uint8_t cs = 46;
   const uint8_t data = 48;
@@ -77,6 +77,22 @@ private:
   void sendCommand(uint8_t command, uint8_t param1, uint8_t param2);
   void sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3);
   void sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4);
+
+  struct Pixel {
+    int red;
+    int green;
+    int blue;
+
+    uint8_t bit1;
+    uint8_t bit2;
+
+    Pixel();
+    Pixel(int r, int g, int b);
+
+    void calcBytes();
+  };
+
+  Pixel** buffer;
 
 public:
 void sendData(uint8_t din);

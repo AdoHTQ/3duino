@@ -149,10 +149,10 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   resX = resolutionX - 1;
   resY = resolutionY - 1;
 
-  buffer = new bool*[resX];
+  buffer = new Pixel*[resX];
 
   for (int i = 0; i < resolutionX; i++) {
-    buffer[i] = new bool[resY];
+    buffer[i] = new Pixel[resY];
   }
 
 
@@ -289,7 +289,12 @@ void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t para
 
 void SSDDisplayDriver::clearScreen()
 {
-
+    // sets all memory and pixels to be blank
+    sendCommand(25);
+    sendCommand(0);
+    sendCommand(0);
+    sendCommand(resX);
+    sendCommand(resY);
 }
 
 void SSDDisplayDriver::clearBuffer()
@@ -307,4 +312,26 @@ void SSDDisplayDriver::testDisplay()
 
 void SSDDisplayDriver::renderDisplay()
 {
+}
+
+SSDDisplayDriver::Pixel::Pixel() {
+    red = 0;
+    blue = 0;
+    green = 0;
+}
+
+SSDDisplayDriver::Pixel::Pixel(int r, int g, int b) {
+    red = r > 31 ? 31 : r;
+    green  = g > 63 ? 63 : g;
+    blue = b > 31 ? 31 : b;
+    calcBytes();
+}
+
+void SSDDisplayDriver::Pixel::calcBytes() {
+  // calculates the 16 bit color value
+  uint16_t tmp = ((red << 11) | (green << 5) | blue);
+  
+  // splits the 16 bit into two bytes
+  bit1 = (uint8_t) (tmp & 0xFF00);
+  bit2 = (uint8_t) ((tmp & 0xFF00) >> 8);
 }
