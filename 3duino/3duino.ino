@@ -16,16 +16,19 @@ void setup()
   dis = new SSDDisplayDriver(0, 0, 96, 64);
   renderer = new Renderer(dis);
 
+  //delay(1000);
+
   isSetup = true;
 }
 
 void loop()
 {
   if (!isSetup) return;
-  dis -> sendData(0x0F);
+  dis -> sendData(0x00);
+  dis -> sendData(0xFF);
 
   // dis -> clearBuffer();
   // renderer -> renderMesh(&plane);
   // dis -> renderDisplay();
-  delay(5);
+  //delay(1);
 }

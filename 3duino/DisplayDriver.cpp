@@ -149,12 +149,12 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   resX = resolutionX - 1;
   resY = resolutionY - 1;
 
-  buffer = new Pixel*[resX];
+  // buffer = new Pixel*[resX];
 
-  for (int i = 0; i < resolutionX; i++) {
-    //hanging for some reason
-    //buffer[i] = new Pixel[resY];
-  }
+  // for (int i = 0; i < resolutionX; i++) {
+  //   //hanging for some reason
+  //   buffer[i] = new Pixel[resY];
+  // }
 
 
   //Set all pins to output mode
@@ -194,23 +194,14 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   // Turn off display
   sendCommand(0xAE);
 
-
-  // Setup columns
-  sendCommand(0x15);
-  sendCommand(x);
-  sendCommand(resX + x);
-
-  // Setup rows
-  sendCommand(0x75);
-  sendCommand(y);
-  sendCommand(resY + y);
+  // sendCommand(0xB3);
+  // sendCommand(0xF0);
   
   // turn on display last
   sendCommand(0xAF);
-  sendCommand(0xA5);
   
   //Clear screen
-  clearScreen();
+  //clearScreen();
 }
 
 void SSDDisplayDriver::sendData(uint8_t din)
