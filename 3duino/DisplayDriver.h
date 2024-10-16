@@ -73,10 +73,6 @@ private:
 
   //Yes, I tried to use an array. It's annoying
   void sendCommand(uint8_t command);
-  void sendCommand(uint8_t command, uint8_t param1);
-  void sendCommand(uint8_t command, uint8_t param1, uint8_t param2);
-  void sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3);
-  void sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4);
 
   struct Pixel {
     int red;

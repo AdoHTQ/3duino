@@ -152,7 +152,8 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   buffer = new Pixel*[resX];
 
   for (int i = 0; i < resolutionX; i++) {
-    buffer[i] = new Pixel[resY];
+    //hanging for some reason
+    //buffer[i] = new Pixel[resY];
   }
 
 
@@ -165,7 +166,7 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   
   //Reset display
   digitalWrite(reset, LOW);
-  delay(1000);
+  delay(10);
   digitalWrite(reset, HIGH);
 
   digitalWrite(cs, LOW);
@@ -190,7 +191,9 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   sendCommand(0x3F);
   */
 
-  // There has to be a better way to do this
+  // Turn off display
+  sendCommand(0xAE);
+
 
   // Setup columns
   sendCommand(0x15);
@@ -204,7 +207,8 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   
   // turn on display last
   sendCommand(0xAF);
-
+  sendCommand(0xA5);
+  
   //Clear screen
   clearScreen();
 }
@@ -215,9 +219,8 @@ void SSDDisplayDriver::sendData(uint8_t din)
   digitalWrite(cs, LOW);
   digitalWrite(clock, LOW);
 
-
   shiftOut(data, clock, MSBFIRST, din);
-
+  
   digitalWrite(cs, HIGH);
 }
 
@@ -228,73 +231,18 @@ void SSDDisplayDriver::sendCommand(uint8_t command)
   digitalWrite(clock, LOW);
 
   shiftOut(data, clock, MSBFIRST, command);
-
+  Serial.println(command);
   digitalWrite(cs, HIGH);
 }
-
-void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1)
-{
-  digitalWrite(command, LOW);
-  digitalWrite(cs, LOW);
-  digitalWrite(clock, LOW);
-
-  shiftOut(data, clock, MSBFIRST, command);
-  shiftOut(data, clock, MSBFIRST, param1);
-
-  digitalWrite(cs, HIGH);
-}
-
-void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t param2)
-{
-  digitalWrite(command, LOW);
-  digitalWrite(cs, LOW);
-  digitalWrite(clock, LOW);
-
-  shiftOut(data, clock, MSBFIRST, command);
-  shiftOut(data, clock, MSBFIRST, param1);
-  shiftOut(data, clock, MSBFIRST, param2);
-
-  digitalWrite(cs, HIGH);
-}
-
-void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3)
-{
-  digitalWrite(command, LOW);
-  digitalWrite(cs, LOW);
-  digitalWrite(clock, LOW);
-
-  shiftOut(data, clock, MSBFIRST, command);
-  shiftOut(data, clock, MSBFIRST, param1);
-  shiftOut(data, clock, MSBFIRST, param2);
-  shiftOut(data, clock, MSBFIRST, param3);
-
-  digitalWrite(cs, HIGH);
-}
-
-void SSDDisplayDriver::sendCommand(uint8_t command, uint8_t param1, uint8_t param2, uint8_t param3, uint8_t param4)
-{
-  digitalWrite(command, LOW);
-  digitalWrite(cs, LOW);
-  digitalWrite(clock, LOW);
-
-  shiftOut(data, clock, MSBFIRST, command);
-  shiftOut(data, clock, MSBFIRST, param1);
-  shiftOut(data, clock, MSBFIRST, param2);
-  shiftOut(data, clock, MSBFIRST, param3);
-  shiftOut(data, clock, MSBFIRST, param4);
-
-  digitalWrite(cs, HIGH);
-}
-
 
 void SSDDisplayDriver::clearScreen()
 {
-    // sets all memory and pixels to be blank
-    sendCommand(25);
-    sendCommand(0);
-    sendCommand(0);
-    sendCommand(resX);
-    sendCommand(resY);
+  // sets all memory and pixels to be blank
+  sendCommand(0x25);
+  sendCommand(0x00);
+  sendCommand(0x00);
+  sendCommand(resX);
+  sendCommand(resY);
 }
 
 void SSDDisplayDriver::clearBuffer()
@@ -315,16 +263,16 @@ void SSDDisplayDriver::renderDisplay()
 }
 
 SSDDisplayDriver::Pixel::Pixel() {
-    red = 0;
-    blue = 0;
-    green = 0;
+  red = 0;
+  blue = 0;
+  green = 0;
 }
 
 SSDDisplayDriver::Pixel::Pixel(int r, int g, int b) {
-    red = r > 31 ? 31 : r;
-    green  = g > 63 ? 63 : g;
-    blue = b > 31 ? 31 : b;
-    calcBytes();
+  red = r > 31 ? 31 : r;
+  green  = g > 63 ? 63 : g;
+  blue = b > 31 ? 31 : b;
+  calcBytes();
 }
 
 void SSDDisplayDriver::Pixel::calcBytes() {
