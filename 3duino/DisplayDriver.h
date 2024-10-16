@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 #include "Vectors.h"
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1331.h>
+#include <SPI.h>
+
 
 /*
 
@@ -26,6 +30,9 @@ public:
   virtual void clearBuffer();
 
   virtual void setPixel(int x, int y, bool state);
+
+  virtual void drawLine(int x1, int y1, int x2, int y2);
+  virtual void drawLine(VectorI p1, VectorI p2);
 
   virtual void testDisplay();
 
@@ -71,7 +78,7 @@ private:
 
   
 
-  //Yes, I tried to use an array. It's annoying
+  
   void sendCommand(uint8_t command);
 
   struct Pixel {
@@ -91,7 +98,14 @@ private:
   Pixel** buffer;
 
 public:
-void sendData(uint8_t din);
+  Adafruit_SSD1331 oled =
+    Adafruit_SSD1331(
+      cs,
+      command,
+      data,
+      clock,
+      reset
+    );   
   SSDDisplayDriver(uint8_t x, uint8_t y, uint8_t resolutionX, uint8_t resolutionY);
 
   void clearScreen();

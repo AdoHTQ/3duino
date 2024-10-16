@@ -142,6 +142,49 @@ void MAXDisplayDriver::renderDisplay() {
   }  
 }
 
+void MAXDisplayDriver::drawLine(int x1, int y1, int x2, int y2)
+{
+  int y = y1;
+  int x = x1;
+  int dx = abs(x2-x1);
+  int dy = abs(y2-y1);
+  int s1 = sign(x2-x1);
+  int s2 = sign(y2-y1);
+
+  bool interchange;
+
+  if (dy > dx)
+  {
+    int t = dx;
+    dx = dy;
+    dy = t;
+    interchange = true;
+  } 
+  else {interchange = false;}
+  
+  int e = 2*dy - dx;
+  int a = 2*dy;
+  int b = 2*dy - 2*dx;
+  dis->setPixel(x, y, true);
+
+  for (int i = 1; i <= dx; i++)
+  {
+    if (e < 0) 
+    {
+      if (interchange) {y += s2;}
+      else {x += s1;}
+      e += a;
+    }
+    else
+    {
+      y += s2;
+      x += s1;
+      e += b;
+    }
+    dis -> setPixel(x, y, true);
+  }
+}
+
 
 
 SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8_t resolutionX, const uint8_t resolutionY) 
@@ -149,91 +192,17 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
   resX = resolutionX - 1;
   resY = resolutionY - 1;
 
-  // buffer = new Pixel*[resX];
+  oled.begin();
 
-  // for (int i = 0; i < resolutionX; i++) {
-  //   //hanging for some reason
-  //   buffer[i] = new Pixel[resY];
-  // }
+  clearScreen();
 
-
-  //Set all pins to output mode
-  pinMode(data, OUTPUT);
-  pinMode(cs, OUTPUT);
-  pinMode(clock, OUTPUT);
-  pinMode(command, OUTPUT);
-  pinMode(reset, OUTPUT);
-  
-  //Reset display
-  digitalWrite(reset, LOW);
-  delay(10);
-  digitalWrite(reset, HIGH);
-
-  digitalWrite(cs, LOW);
-
-
- 
-  // these are some more commands that I tried, it borked the display when I tried it tho.
-
-  /*
-  sendCommand(0xAE);
-  sendCommand(0xA0);
-  sendCommand(0x72);
-
-  sendCommand(0xAD);
-  sendCommand(0x8E);
-
-  sendCommand(0xB3);
-  sendCommand(0xF0);
-
-  sendCommand(0xA4);
-  sendCommand(0xA8);
-  sendCommand(0x3F);
-  */
-
-  // Turn off display
-  sendCommand(0xAE);
-
-  // sendCommand(0xB3);
-  // sendCommand(0xF0);
-  
-  // turn on display last
-  sendCommand(0xAF);
-  
   //Clear screen
-  //clearScreen();
-}
-
-void SSDDisplayDriver::sendData(uint8_t din)
-{
-  digitalWrite(command, HIGH);
-  digitalWrite(cs, LOW);
-  digitalWrite(clock, LOW);
-
-  shiftOut(data, clock, MSBFIRST, din);
-  
-  digitalWrite(cs, HIGH);
-}
-
-void SSDDisplayDriver::sendCommand(uint8_t command)
-{
-  digitalWrite(command, LOW);
-  digitalWrite(cs, LOW);
-  digitalWrite(clock, LOW);
-
-  shiftOut(data, clock, MSBFIRST, command);
-  Serial.println(command);
-  digitalWrite(cs, HIGH);
 }
 
 void SSDDisplayDriver::clearScreen()
 {
   // sets all memory and pixels to be blank
-  sendCommand(0x25);
-  sendCommand(0x00);
-  sendCommand(0x00);
-  sendCommand(resX);
-  sendCommand(resY);
+  oled.fillScreen(0xFF00);
 }
 
 void SSDDisplayDriver::clearBuffer()
@@ -246,7 +215,7 @@ void SSDDisplayDriver::setPixel(int x, int y, bool state)
 
 void SSDDisplayDriver::testDisplay()
 {
-  sendCommand(0xA5);
+  //sendCommand(0xA5);
 }
 
 void SSDDisplayDriver::renderDisplay()

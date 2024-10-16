@@ -33,9 +33,6 @@ private:
   const float far = 10.;
   const float near = 0.1;
 
-  void drawLine(int x1, int y1, int x2, int y2);
-  void drawLine(VectorI p1, VectorI p2);
-
   void drawTriangle(VectorI p1, VectorI p2, VectorI p3);
 
   void createProjectionMatrix();

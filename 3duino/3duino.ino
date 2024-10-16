@@ -24,8 +24,10 @@ void setup()
 void loop()
 {
   if (!isSetup) return;
-  dis -> sendData(0x00);
-  dis -> sendData(0xFF);
+  // dis -> sendData(0x00);
+  // dis -> sendData(0xFF);
+
+  
 
   // dis -> clearBuffer();
   // renderer -> renderMesh(&plane);
