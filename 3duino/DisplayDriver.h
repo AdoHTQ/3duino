@@ -33,6 +33,8 @@ public:
   virtual void drawLine(int x1, int y1, int x2, int y2);
   virtual void drawLine(VectorI p1, VectorI p2);
 
+  virtual void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint16_t color);
+
   virtual void testDisplay();
 
   virtual void renderDisplay();
@@ -63,6 +65,7 @@ public:
   void setPixel(int x, int y, bool state);
   void drawLine(int x1, int y1, int x2, int y2);
   void drawLine(VectorI p1, VectorI p2);
+  void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint16_t color);
 
   void testDisplay();
 
@@ -96,7 +99,7 @@ private:
     void calcBytes();
   };
 
-  Pixel** buffer;
+  //Pixel** buffer;
 
 public:
   Adafruit_SSD1331 oled =
@@ -116,6 +119,7 @@ public:
   void setPixel(int x, int y, bool state);
   void drawLine(int x1, int y1, int x2, int y2);
   void drawLine(VectorI p1, VectorI p2);
+  void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint16_t color);
 
   void testDisplay();
 

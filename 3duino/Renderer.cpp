@@ -42,23 +42,19 @@ void Renderer::createProjectionMatrix()
   projection.setElement(3, 2, -1);
 }
 
-void Renderer::drawTriangle(VectorI p1, VectorI p2, VectorI p3)
-{
-  dis->drawLine(p1, p2);
-  dis->drawLine(p2, p3);
-  dis->drawLine(p3, p1);
-}
-
 VectorI Renderer::transformVertex(Vector vertex)
 {
-  if (vertex.axisCount < 3) {return VectorI();}
-  Vector homogenous = Vector(vertex[0], vertex[1], vertex[2], 1.0);
+  // if (vertex.axisCount < 3) {return VectorI();}
   
-  //homogenous.y -= 0.2;
-  homogenous = projection * homogenous;
-  // Orthographic projection
+  // Vector homogenous = Vector(vertex[0], vertex[1], vertex[2], 1.0);
   
-  return VectorI(round((homogenous[0] / homogenous[3] + 1.0) * ((float)dis->resX/2.0)), round((homogenous[1] / homogenous[3] + 1.0) * ((float)dis->resX/2.0)));
+  // // Perspective projection
+  // homogenous = projection * homogenous;
+  
+  // // Orthographic projection
+  // Serial.println("fesnuoifsdj");
+  // return VectorI(round((homogenous[0] / homogenous[3] + 1.0) * dis->resX / 2.0), round((homogenous[1] / homogenous[3] + 1.0) * dis->resX / 2.0));
+  return VectorI(0, 0, 0);
 }
 
 void Renderer::renderMesh(Mesh *mesh)
@@ -78,16 +74,17 @@ void Renderer::renderMesh(Mesh *mesh)
   for (int i = 0; i < mesh->numFaces; i++)
   {
     //Vector3 transform = Vector3(0.0, 0.0, 0.0);
-    VectorI p1 = transformVertex(mesh->vertices[mesh->faces[i][0]]);
-    VectorI p3 = transformVertex(mesh->vertices[mesh->faces[i][1]]);
-    VectorI p2 = transformVertex(mesh->vertices[mesh->faces[i][2]]);
-    Serial.println(p1[0]);
-    Serial.println(p1[1]);
-    Serial.println(p2[0]);
-    Serial.println(p2[1]);
-    Serial.println(p3[0]);
-    Serial.println(p3[1]);
-    drawTriangle(p1, p2, p3);
+    VectorI p1 = transformVertex(mesh->vertices[mesh->faces[i][0]-1]);
+    //VectorI p2 = transformVertex(mesh->vertices[mesh->faces[i][1]-1]);
+    //VectorI p3 = transformVertex(mesh->vertices[mesh->faces[i][2]-1]);
+    //Serial.println(p1[0]);
+    //Serial.println(p1[1]);
+    // Serial.println(p2[0]);
+    // Serial.println(p2[1]);
+    // Serial.println(p3[0]);
+    // Serial.println(p3[1]);
+    //dis->drawTriangle(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1], 0xFFFF);
+    //dis->drawTriangle(20, 20, 96, 64, 10, 40, 0xFFFF);
   }
 }
 

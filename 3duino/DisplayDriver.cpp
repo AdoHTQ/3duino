@@ -199,6 +199,16 @@ void MAXDisplayDriver::drawLine(VectorI p1, VectorI p2)
   drawLine(p1[0], p1[1], p2[0], p2[1]);
 }
 
+void MAXDisplayDriver::drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint16_t color)
+{
+  VectorI p1 = VectorI(x1, y1);
+  VectorI p2 = VectorI(x2, y2);
+  VectorI p3 = VectorI(x3, y3);
+  drawLine(p1, p2);
+  drawLine(p2, p3);
+  drawLine(p3, p1);
+}
+
 
 
 
@@ -230,13 +240,16 @@ void SSDDisplayDriver::setPixel(int x, int y, bool state)
 void SSDDisplayDriver::drawLine(int x1, int y1, int x2, int y2)
 {
   oled.drawLine(x1, y1, x2, y2, 0xFFFF);
-  Serial.println("b");
 }
 
 void SSDDisplayDriver::drawLine(VectorI p1, VectorI p2)
 {
-  Serial.println("a");
   drawLine(p1[0], p1[1], p2[0], p2[1]);
+}
+
+void SSDDisplayDriver::drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint16_t color)
+{
+  oled.drawTriangle(x1, y1, x2, y2, x3, y3, color);
 }
 
 void SSDDisplayDriver::testDisplay()
