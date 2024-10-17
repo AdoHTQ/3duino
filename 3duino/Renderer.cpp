@@ -9,8 +9,15 @@ Mesh::Mesh (int numVertices, int numFaces)
 }
 
 Mesh::Mesh (Vector* vertices, VectorI* faces, int numVertices, int numFaces) {
-  this -> vertices = vertices;
-  this -> faces = faces;
+  this -> vertices = new Vector[numVertices];
+  for (int i = 0; i < numVertices; i++) {
+    this -> vertices[i] = vertices[i];  
+  }
+
+  this -> faces = new VectorI[numFaces];
+  for (int i = 0; i < numFaces; i++) {
+    this -> faces[i] = faces[i];  
+  }
   this -> numVertices = numVertices;
   this -> numFaces = numFaces;
 }
@@ -42,19 +49,19 @@ void Renderer::createProjectionMatrix()
   projection.setElement(3, 2, -1);
 }
 
-VectorI Renderer::transformVertex(Vector vertex)
+VectorI* Renderer::transformVertex(Vector* ver)
 {
-  // if (vertex.axisCount < 3) {return VectorI();}
+  Vector vertex = *ver;
+  if (vertex.axisCount < 3) {return VectorI();}
   
-  // Vector homogenous = Vector(vertex[0], vertex[1], vertex[2], 1.0);
+  Vector homogenous = Vector(vertex[0], vertex[1], vertex[2], 1.0); 
   
-  // // Perspective projection
-  // homogenous = projection * homogenous;
+  // Perspective projection
+  homogenous = projection * homogenous;
   
-  // // Orthographic projection
-  // Serial.println("fesnuoifsdj");
-  // return VectorI(round((homogenous[0] / homogenous[3] + 1.0) * dis->resX / 2.0), round((homogenous[1] / homogenous[3] + 1.0) * dis->resX / 2.0));
-  return VectorI(0, 0, 0);
+  // Orthographic projection
+  Serial.println("fesnuoifsdj");
+  return new VectorI(round((homogenous[0] / homogenous[3] + 1.0) * dis->resX / 2.0), round((homogenous[1] / homogenous[3] + 1.0) * dis->resX / 2.0));
 }
 
 void Renderer::renderMesh(Mesh *mesh)
@@ -73,12 +80,16 @@ void Renderer::renderMesh(Mesh *mesh)
   //Loop over each face
   for (int i = 0; i < mesh->numFaces; i++)
   {
+    // Serial.print("Count: ");
+    // Serial.println(i);
+    //Serial.println(sizeof(mesh->vertices));
+    //Serial.println(mesh->vertices[mesh->faces[0][0]-1][0]);
     //Vector3 transform = Vector3(0.0, 0.0, 0.0);
-    VectorI p1 = transformVertex(mesh->vertices[mesh->faces[i][0]-1]);
+    VectorI p1 = transformVertex(&mesh->vertices[mesh->faces[i][0]-1]);
     //VectorI p2 = transformVertex(mesh->vertices[mesh->faces[i][1]-1]);
     //VectorI p3 = transformVertex(mesh->vertices[mesh->faces[i][2]-1]);
-    //Serial.println(p1[0]);
-    //Serial.println(p1[1]);
+    Serial.println(p1[0]);
+    Serial.println(p1[1]);
     // Serial.println(p2[0]);
     // Serial.println(p2[1]);
     // Serial.println(p3[0]);

@@ -36,7 +36,7 @@ private:
   void drawTriangle(VectorI p1, VectorI p2, VectorI p3);
 
   void createProjectionMatrix();
-  VectorI transformVertex(Vector vertex);
+  VectorI transformVertex(Vector* vertex);
 
 public:
   Renderer(DisplayDriver* displayDriver);
