@@ -20,11 +20,10 @@ This is their order
 */
 
 class DisplayDriver {
-protected:
+public:
   uint8_t resX;
   uint8_t resY;
 
-public:
   virtual void clearScreen();
 
   virtual void clearBuffer();
@@ -62,6 +61,8 @@ public:
   void clearBuffer();
 
   void setPixel(int x, int y, bool state);
+  void drawLine(int x1, int y1, int x2, int y2);
+  void drawLine(VectorI p1, VectorI p2);
 
   void testDisplay();
 
@@ -113,6 +114,8 @@ public:
   void clearBuffer();
 
   void setPixel(int x, int y, bool state);
+  void drawLine(int x1, int y1, int x2, int y2);
+  void drawLine(VectorI p1, VectorI p2);
 
   void testDisplay();
 

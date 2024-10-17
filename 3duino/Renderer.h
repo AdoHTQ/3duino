@@ -29,7 +29,7 @@ private:
   Matrix44 projection;
 
   float fov = 30 / 57.2957795;
-  const float aspect = 1.;
+  const float aspect = 30.;
   const float far = 10.;
   const float near = 0.1;
 

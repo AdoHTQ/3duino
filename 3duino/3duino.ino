@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "Vectors.h"
 
-#include "PlaneMesh.h"
+#include "CubeMesh.h"
 
 SSDDisplayDriver* dis;
 Renderer* renderer;
@@ -24,13 +24,8 @@ void setup()
 void loop()
 {
   if (!isSetup) return;
-  // dis -> sendData(0x00);
-  // dis -> sendData(0xFF);
-
-  
-
   // dis -> clearBuffer();
-  // renderer -> renderMesh(&plane);
-  // dis -> renderDisplay();
-  //delay(1);
+  renderer -> renderMesh(&cube);
+  dis -> renderDisplay();
+  delay(1000);
 }

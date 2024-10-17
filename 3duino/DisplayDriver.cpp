@@ -1,6 +1,8 @@
 #include "DisplayDriver.h"
 #include "Vectors.h"
 
+
+
 MAXDisplayDriver::MAXDisplayDriver(const uint8_t resolutionX, const uint8_t resolutionY) 
 {
   if (resolutionX != resolutionY || resolutionX % 0x08 != 0x00 || resolutionY % 0x08 != 0x00) {Serial.println("invalid arguments");}
@@ -142,6 +144,13 @@ void MAXDisplayDriver::renderDisplay() {
   }  
 }
 
+int sign(int value)
+{
+  if (value > 0) return 1;
+  if (value == 0) return 0;
+  if (value < 0) return -1;
+}
+
 void MAXDisplayDriver::drawLine(int x1, int y1, int x2, int y2)
 {
   int y = y1;
@@ -165,7 +174,7 @@ void MAXDisplayDriver::drawLine(int x1, int y1, int x2, int y2)
   int e = 2*dy - dx;
   int a = 2*dy;
   int b = 2*dy - 2*dx;
-  dis->setPixel(x, y, true);
+  setPixel(x, y, true);
 
   for (int i = 1; i <= dx; i++)
   {
@@ -181,9 +190,15 @@ void MAXDisplayDriver::drawLine(int x1, int y1, int x2, int y2)
       x += s1;
       e += b;
     }
-    dis -> setPixel(x, y, true);
+    setPixel(x, y, true);
   }
 }
+
+void MAXDisplayDriver::drawLine(VectorI p1, VectorI p2)
+{
+  drawLine(p1[0], p1[1], p2[0], p2[1]);
+}
+
 
 
 
@@ -194,15 +209,14 @@ SSDDisplayDriver::SSDDisplayDriver(const uint8_t x, const uint8_t y, const uint8
 
   oled.begin();
 
-  clearScreen();
-
   //Clear screen
+  clearScreen();
 }
 
 void SSDDisplayDriver::clearScreen()
 {
   // sets all memory and pixels to be blank
-  oled.fillScreen(0xFF00);
+  oled.fillScreen(0x0000);
 }
 
 void SSDDisplayDriver::clearBuffer()
@@ -211,6 +225,18 @@ void SSDDisplayDriver::clearBuffer()
 
 void SSDDisplayDriver::setPixel(int x, int y, bool state)
 {
+}
+
+void SSDDisplayDriver::drawLine(int x1, int y1, int x2, int y2)
+{
+  oled.drawLine(x1, y1, x2, y2, 0xFFFF);
+  Serial.println("b");
+}
+
+void SSDDisplayDriver::drawLine(VectorI p1, VectorI p2)
+{
+  Serial.println("a");
+  drawLine(p1[0], p1[1], p2[0], p2[1]);
 }
 
 void SSDDisplayDriver::testDisplay()
