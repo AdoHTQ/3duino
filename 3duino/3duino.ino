@@ -15,7 +15,7 @@ Stick stick = Stick(A1, A0);
 
 void setup()
 {
-  Serial.begin(2000000);
+  //Serial.begin(2000000);
 
   renderer = new Renderer();
 
@@ -34,8 +34,11 @@ void loop()
 
   Matrix<2> stickPos = stick.getPosition();
   renderer -> position += Matrix<3>(stickPos(0), 0, -stickPos(1));
+  renderer -> rotation += Matrix<3>(0., 0., 0.);
+  renderer -> scale += Matrix<3>(0., 0., 0.);
 
   renderer -> renderMesh(&cube, 0xFFFF);
 
   delay(constrain(targetFrameLength - (millis() - frameStart), 0, targetFrameLength));
+  delay(20);
 }

@@ -79,7 +79,11 @@ void Renderer::sendCommand(uint8_t command)
 
 BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> vertex)
 { 
-  BLA::Matrix<4,4> transformation = BLA::Matrix<4,4>(1, 0, 0, position(0), 0, 1, 0, position(1), 0, 0, 1, position(2), 0, 0, 0, 1);
+  BLA::Matrix<4,4> transformation = BLA::Matrix<4,4>(
+    cos(rotation(1)) * cos(rotation(2)) * scale(0), -sin(rotation(2)), sin(rotation(1)), position(0), 
+    sin(rotation(2)), cos(rotation(0)) * cos(rotation(2)) * scale(1), -sin(rotation(0)), position(1), 
+    -sin(rotation(1)), sin(rotation(0)), cos(rotation(1)) * cos(rotation(0)) * scale(2), position(2), 
+    0, 0, 0, 1);
 
   BLA::Matrix<4,1> homogenous = {vertex(0), vertex(1), vertex(2), 1.0}; 
   
