@@ -53,7 +53,10 @@ private:
 
   BLA::Matrix<4,4> projection;
 
+  void sendCommand(uint8_t command);
+
   void drawTriangle(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, BLA::Matrix<2,1,int> p3, uint16_t color);
+  void drawLine(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, uint16_t color);
 
   void createProjectionMatrix();
   BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> ver);
@@ -62,7 +65,8 @@ public:
   Renderer();
   ~Renderer();
 
-  void renderMesh(Mesh* mesh);
+  void renderMesh(Mesh* mesh, uint16_t color);
+  void clearScreen();
 };
 
 
