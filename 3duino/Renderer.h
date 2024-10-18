@@ -62,6 +62,10 @@ private:
   BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> ver);
 
 public:
+  Matrix<3> position = Matrix<3>(0,0,-5);
+  Matrix<3> scale = Matrix<3>(0,0,0);
+  Matrix<3> rotation = Matrix<3>(0,0,0);
+
   Renderer();
   ~Renderer();
 

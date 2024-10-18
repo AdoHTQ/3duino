@@ -79,9 +79,12 @@ void Renderer::sendCommand(uint8_t command)
 
 BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> vertex)
 { 
+  BLA::Matrix<4,4> transformation = BLA::Matrix<4,4>(1, 0, 0, position(0), 0, 1, 0, position(1), 0, 0, 1, position(2), 0, 0, 0, 1);
+
   BLA::Matrix<4,1> homogenous = {vertex(0), vertex(1), vertex(2), 1.0}; 
   
   //Perspective projection
+  homogenous = transformation * homogenous;
   homogenous = projection * homogenous;
   
   //Orthographic projection
@@ -104,10 +107,9 @@ void Renderer::renderMesh(Mesh *mesh, uint16_t color)
   //Loop over each face
   for (int i = 0; i < mesh->numFaces; i++)
   {
-    Matrix<3,1> transform = Matrix<3,1>(0.0, 0.0, -4.0);
-    BLA::Matrix<2,1,int> p1 = transformVertex(mesh->vertices[mesh->faces[i](0)-1] + transform);
-    BLA::Matrix<2,1,int> p2 = transformVertex(mesh->vertices[mesh->faces[i](1)-1] + transform);
-    BLA::Matrix<2,1,int> p3 = transformVertex(mesh->vertices[mesh->faces[i](2)-1] + transform);
+    BLA::Matrix<2,1,int> p1 = transformVertex(mesh->vertices[mesh->faces[i](0)-1]);
+    BLA::Matrix<2,1,int> p2 = transformVertex(mesh->vertices[mesh->faces[i](1)-1]);
+    BLA::Matrix<2,1,int> p3 = transformVertex(mesh->vertices[mesh->faces[i](2)-1]);
 
     drawTriangle(p1, p2, p3, color);
   }
