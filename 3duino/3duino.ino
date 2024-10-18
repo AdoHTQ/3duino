@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-//#include "CubeMesh.h"
+#include "TriMesh.h"
 
 Renderer* renderer;
 
@@ -22,8 +22,8 @@ void loop()
   if (!isSetup) return;
   // dis -> clearBuffer();
   // Serial.println("a");
-  // renderer -> renderMesh(&cube);
+  renderer -> renderMesh(&tri);
   // Serial.println("b");
   // dis -> renderDisplay();
-  delay(1000);
+  delay(1000000);
 }

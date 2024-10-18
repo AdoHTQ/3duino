@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 #include <BasicLinearAlgebra.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1331.h>
+#include <SPI.h>
 
 using namespace BLA;
 
@@ -25,17 +28,35 @@ struct Mesh {
 
 class Renderer {
 private:
-  BLA::Matrix<4,4> projection;
+  const uint8_t clock = 13;
+  const uint8_t data = 11;
+  const uint8_t reset = 9;
+  const uint8_t command = 8;
+  const uint8_t cs = 10;
+
+  BLA::Matrix<2,1,int> res = {96, 64};
 
   float fov = 30 / 57.2957795;
-  const float aspect = 1.;
+  const float aspect = 96. / 64.;
   const float far = 10.;
   const float near = 0.1;
 
-  void drawTriangle(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, BLA::Matrix<2,1,int> p3);
+
+  Adafruit_SSD1331 oled =
+    Adafruit_SSD1331(
+      cs,
+      command,
+      data,
+      clock,
+      reset
+    );
+
+  BLA::Matrix<4,4> projection;
+
+  void drawTriangle(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, BLA::Matrix<2,1,int> p3, uint16_t color);
 
   void createProjectionMatrix();
-  BLA::Matrix<3,1,int> Renderer::transformVertex(BLA::Matrix<3> ver);
+  BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> ver);
 
 public:
   Renderer();
