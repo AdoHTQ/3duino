@@ -37,7 +37,7 @@ private:
   BLA::Matrix<2,1,int> res = {96, 64};
 
   float fov = 30 / 57.2957795;
-  const float aspect = 96. / 64.;
+  const float aspect = (float)res(0) / res(1);
   const float far = 10.;
   const float near = 0.1;
 

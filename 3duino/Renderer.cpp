@@ -81,23 +81,12 @@ void Renderer::renderMesh(Mesh *mesh)
   //Loop over each face
   for (int i = 0; i < mesh->numFaces; i++)
   {
-    // Serial.print("Count: ");
-    // Serial.println(i);
-    //Serial.println(sizeof(mesh->vertices));
-    //Serial.println(mesh->vertices[mesh->faces[0][0]-1][0]);
-    //Vector3 transform = Vector3(0.0, 0.0, 0.0);
-    BLA::Matrix<2,1,int> p1 = transformVertex(mesh->vertices[mesh->faces[i](0)-1]);
-    BLA::Matrix<2,1,int> p2 = transformVertex(mesh->vertices[mesh->faces[i](1)-1]);
-    BLA::Matrix<2,1,int> p3 = transformVertex(mesh->vertices[mesh->faces[i](2)-1]);
-    //Serial.println(tmp[0]);
-    //Serial.println(tmp[1]);
-    // Serial.println(p2[0]);
-    // Serial.println(p2[1]);
-    // Serial.println(p3[0]);
-    // Serial.println(p3[1]);
+    Matrix<3,1> transform = Matrix<3,1>(0.0, 0.0, -6.0);
+    BLA::Matrix<2,1,int> p1 = transformVertex(mesh->vertices[mesh->faces[i](0)-1] + transform);
+    BLA::Matrix<2,1,int> p2 = transformVertex(mesh->vertices[mesh->faces[i](1)-1] + transform);
+    BLA::Matrix<2,1,int> p3 = transformVertex(mesh->vertices[mesh->faces[i](2)-1] + transform);
+
     drawTriangle(p1, p2, p3, 0xFFFF);
-    //dis->drawTriangle(20, 20, 96, 64, 10, 40, 0xFFFF);
-    //delete p1;
   }
 }
 
