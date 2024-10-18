@@ -2,25 +2,25 @@
 
 Mesh::Mesh (int numVertices, int numFaces)
 {
-  vertices = new Vector[numVertices];
-  faces = new VectorI[numFaces];
+  vertices = new BLA::Matrix<3>[numVertices];
+  faces = new BLA::Matrix<3,1,int>[numFaces];
   this -> numVertices = numVertices;
   this -> numFaces = numFaces;
 }
 
-Mesh::Mesh (Vector* vertices, VectorI* faces, int numVertices, int numFaces) {
-  this -> vertices = new Vector[numVertices];
-  for (int i = 0; i < numVertices; i++) {
-    this -> vertices[i] = vertices[i];  
-  }
+// Mesh::Mesh (BLA::Matrix<3>* vertices, BLA::Matrix<3,1,int>* faces, int numVertices, int numFaces) {
+//   this -> vertices = BLA::Matrix<3>[numVertices];
+//   for (int i = 0; i < numVertices; i++) {
+//     this -> vertices[i] = vertices[i];  
+//   }
 
-  this -> faces = new VectorI[numFaces];
-  for (int i = 0; i < numFaces; i++) {
-    this -> faces[i] = faces[i];  
-  }
-  this -> numVertices = numVertices;
-  this -> numFaces = numFaces;
-}
+//   this -> faces = BLA::Matrix<3,1>[numFaces];
+//   for (int i = 0; i < numFaces; i++) {
+//     this -> faces[i] = faces[i];  
+//   }
+//   this -> numVertices = numVertices;
+//   this -> numFaces = numFaces;
+// }
 
 Mesh::~Mesh() {
   delete[] vertices;
@@ -29,10 +29,8 @@ Mesh::~Mesh() {
 
 
 
-Renderer::Renderer(DisplayDriver* dis)
+Renderer::Renderer()
 {
-  this->dis = dis;
-
   createProjectionMatrix();
 
   //Serial.println(transformVertex(&Vector3(1, 1, 2)).x);
@@ -41,27 +39,27 @@ Renderer::Renderer(DisplayDriver* dis)
 
 void Renderer::createProjectionMatrix()
 {
-  projection = Matrix44();
-  projection.setElement(0, 0, 1 / (aspect * tan(fov / 2)));
-  projection.setElement(1, 1, 1 / tan(fov / 2));
-  projection.setElement(2, 2, (far + near) / (near - far));
-  projection.setElement(2, 3, (2 * far * near) / (near - far));
-  projection.setElement(3, 2, -1);
+  projection = BLA::Matrix<4,4>();
+  projection(0, 0) = 1 / (aspect * tan(fov / 2));
+  projection(1, 1) = 1 / tan(fov / 2);
+  projection(2, 2) = (far + near) / (near - far);
+  projection(2, 3) = (2 * far * near) / (near - far);
+  projection(3, 2) = -1;
 }
 
-VectorI* Renderer::transformVertex(Vector* ver)
-{
-  Vector vertex = *ver;
-  //if (vertex.axisCount < 3) {return new VectorI();}
-  
-  Vector homogenous = Vector(vertex[0], vertex[1], vertex[2], 1.0); 
+BLA::Matrix<3,1,int> Renderer::transformVertex(BLA::Matrix<3> vertex)
+{ 
+  BLA::Matrix<4,1> homogenous = {vertex(0), vertex(1), vertex(2), 1.0}; 
   
   //Perspective projection
   homogenous = projection * homogenous;
   
   //Orthographic projection
   //return new VectorI(round((homogenous[0] / homogenous[3] + 1.0) * dis->resX / 2.0), round((homogenous[1] / homogenous[3] + 1.0) * dis->resX / 2.0));
-  return new VectorI(homogenous[0], homogenous[1], homogenous[2]);
+  
+  BLA::Matrix<3,1,int> result = {homogenous(0), homogenous(1), homogenous(2)};
+
+  return result;
   //return new VectorI(0, 0, 0);
 }
 
@@ -86,7 +84,7 @@ void Renderer::renderMesh(Mesh *mesh)
     //Serial.println(sizeof(mesh->vertices));
     //Serial.println(mesh->vertices[mesh->faces[0][0]-1][0]);
     //Vector3 transform = Vector3(0.0, 0.0, 0.0);
-    VectorI* p1 = transformVertex(&mesh->vertices[mesh->faces[i][0]-1]);
+    //VectorI* p1 = transformVertex(&mesh->vertices[mesh->faces[i][0]-1]);
     //VectorI tmp = *p1;
     //VectorI p2 = transformVertex(mesh->vertices[mesh->faces[i][1]-1]);
     //VectorI p3 = transformVertex(mesh->vertices[mesh->faces[i][2]-1]);
