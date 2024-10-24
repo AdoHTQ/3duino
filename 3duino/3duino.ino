@@ -19,7 +19,7 @@ void setup()
 
   renderer = new Renderer();
 
-  isSetup = true;
+  //isSetup = true;
 }
 
 unsigned long frameStart;

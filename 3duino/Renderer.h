@@ -3,9 +3,6 @@
 
 #include <Arduino.h>
 #include <BasicLinearAlgebra.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1331.h>
-#include <SPI.h>
 
 using namespace BLA;
 
@@ -42,21 +39,15 @@ private:
   const float near = 0.1;
 
 
-  Adafruit_SSD1331 oled =
-    Adafruit_SSD1331(
-      cs,
-      command,
-      data,
-      clock,
-      reset
-    );
-
   BLA::Matrix<4,4> projection;
 
   void sendCommand(uint8_t command);
+  void sendData(uint8_t din);
 
   void drawTriangle(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, BLA::Matrix<2,1,int> p3, uint16_t color);
   void drawLine(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, uint16_t color);
+
+  void fillScreen(uint16_t color);
 
   void createProjectionMatrix();
   BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> ver);
