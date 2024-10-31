@@ -2,13 +2,13 @@
 #define RENDERER_H
 
 #include <Arduino.h>
-#include "Vectors.h"
-#include "DisplayDriver.h"
-#include "Matrix.h"
+#include <BasicLinearAlgebra.h>
+
+using namespace BLA;
 
 struct Mesh {
-  Vector* vertices;
-  VectorI* faces;
+  BLA::Matrix<3>* vertices;
+  BLA::Matrix<3,1,int>* faces;
 
   int numVertices;
   int numFaces;
@@ -17,7 +17,7 @@ struct Mesh {
 
   Mesh (int, int);
 
-  Mesh (Vector*, VectorI*, int, int);
+  Mesh (BLA::Matrix<3>*, BLA::Matrix<3,1,int>*, int, int);
 
   ~Mesh();
 
@@ -25,24 +25,43 @@ struct Mesh {
 
 class Renderer {
 private:
-  DisplayDriver* dis;
-  Matrix44 projection;
+  const uint8_t clock = 13;
+  const uint8_t data = 11;
+  const uint8_t reset = 9;
+  const uint8_t command = 8;
+  const uint8_t cs = 10;
 
-  float fov = 30 / 57.2957795;
-  const float aspect = 1.;
+  BLA::Matrix<2,1,int> res = {96, 64};
+
+  float fov = 30. / 57.2957795;
+  const float aspect = (float)res(0) / res(1);
   const float far = 10.;
   const float near = 0.1;
 
-  void drawTriangle(VectorI p1, VectorI p2, VectorI p3);
+
+  BLA::Matrix<4,4> projection;
+
+  void sendCommand(uint8_t command);
+  void sendData(uint8_t din);
+
+  void drawTriangle(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, BLA::Matrix<2,1,int> p3, uint16_t color);
+  void drawLine(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, uint16_t color);
+
+  void fillScreen(uint16_t color);
 
   void createProjectionMatrix();
-  VectorI* transformVertex(Vector* vertex);
+  BLA::Matrix<2,1,int> Renderer::transformVertex(BLA::Matrix<3> ver);
 
 public:
-  Renderer(DisplayDriver* displayDriver);
+  Matrix<3> position = Matrix<3>(0,0,-5);
+  Matrix<3> scale = Matrix<3>(1.,1.,1.);
+  Matrix<3> rotation = Matrix<3>(0,0,0);
+
+  Renderer();
   ~Renderer();
 
-  void renderMesh(Mesh* mesh);
+  void renderMesh(Mesh* mesh, uint16_t color);
+  void clearScreen();
 };
 
 

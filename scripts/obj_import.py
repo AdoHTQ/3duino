@@ -55,10 +55,12 @@ with open(path, "r") as file:
             faces.append(minifaces)
 
 
+    output += "#include <BasicLinearAlgebra.h>"
+
     output += "// vertex array\n"
-    output += f"Vector vectors[] = " + "{"
+    output += f"Matrix<3> vertices[] = " + "{"
     for vector in vectors:
-        output += f"Vector("
+        output += f"Matrix<3>("
         for index, vertex in enumerate(vector):
             output += f"{float(vertex)}"
             if not index == len(vector) - 1:
@@ -67,9 +69,9 @@ with open(path, "r") as file:
     output += "};\n"
 
     output += "// face array\n"
-    output += f"VectorI faces[] = " + "{"
+    output += f"Matrix<3,1,int> faces[] = " + "{"
     for face in faces:
-        output += f"VectorI("
+        output += f"Matrix<3,1,int>("
         for index, vertex in enumerate(face):
             output += f"{int(vertex)}"
             if not index == len(face) - 1:
@@ -79,7 +81,7 @@ with open(path, "r") as file:
 
 
     output += "// final mesh object\n"
-    output += f"Mesh {name.lower()}(vectors, faces, {len(vectors)}, {len(faces)});"
+    output += f"Mesh {name.lower()}(vertices, faces, {len(vectors)}, {len(faces)});"
 
 
 
