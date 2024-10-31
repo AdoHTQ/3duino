@@ -34,9 +34,16 @@ Renderer::Renderer()
 {
   createProjectionMatrix();
 
+  pinMode(clock, OUTPUT);
+  pinMode(data, OUTPUT);
+  pinMode(reset, OUTPUT);
+  pinMode(command, OUTPUT);
+  pinMode(cs, OUTPUT);
+
   digitalWrite(reset, LOW);
   delay(50);
   digitalWrite(reset, HIGH);
+  delay(100);
 
   sendCommand(0xAE); //Display off
 
@@ -81,8 +88,8 @@ Renderer::Renderer()
   sendCommand(0xBE); //VCOMH
   sendCommand(0x3E);
 
-  sendCommand(0x87); //Mastercurrent
-  sendCommand(0x06);
+  // sendCommand(0x87); //Mastercurrent
+  // sendCommand(0x06);
 
   sendCommand(0x81); //Contrast A
   sendCommand(0x91);
@@ -95,23 +102,7 @@ Renderer::Renderer()
 
   sendCommand(0xAF); //Display on
 
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
-  sendData(0xFF);
+  clearScreen();
 }
 
 void Renderer::createProjectionMatrix()
@@ -126,30 +117,45 @@ void Renderer::createProjectionMatrix()
 
 void Renderer::drawTriangle(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, BLA::Matrix<2,1,int> p3, uint16_t color)
 {
-  //drawLine(p1, p2, color);
+  drawLine(p1, p2, color);
+  drawLine(p2, p3, color);
+  drawLine(p3, p1, color);
   //oled.drawTriangle(p1(0), p1(1), p2(0), p2(1), p3(0), p3(1), color);
 }
 
 void Renderer::drawLine(BLA::Matrix<2,1,int> p1, BLA::Matrix<2,1,int> p2, uint16_t color)
 {
   sendCommand(0x21);
-  // sendCommand(p1(0));
-  // sendCommand(p1(1));
-  // sendCommand(p2(0));
-  // sendCommand(p2(1));
-  sendCommand(0);
-  sendCommand(0);
-  sendCommand(96);
-  sendCommand(64);
-
+  sendCommand(constrain(p1(0), 10, 80));
+  sendCommand(constrain(p1(1), 10, 50));
+  sendCommand(constrain(p2(0), 10, 80));
+  sendCommand(constrain(p2(1), 10, 50));
+  
   sendCommand(0xFF);
   sendCommand(0xFF);
   sendCommand(0xFF);
+  //delay(100);
 }
 
 void Renderer::fillScreen(uint16_t color)
 {
+  //Enable fill
+  sendCommand(0x26);
+  sendCommand(0x01);
 
+  //Draw full screen rect
+  sendCommand(0x22);
+  sendCommand(1);
+  sendCommand(1);
+  sendCommand(94);
+  sendCommand(62);
+  sendCommand(0x00);
+  sendCommand(0x00);
+  sendCommand(0x00);
+  sendCommand(0x00);
+  sendCommand(0x00);
+  sendCommand(0x00);
+  //delay(100);
 }
 
 void Renderer::sendCommand(uint8_t command)
@@ -218,9 +224,6 @@ void Renderer::renderMesh(Mesh *mesh, uint16_t color)
 
 void Renderer::clearScreen()
 {
-  //oled.fillScreen(0x0000);
-  // digitalWrite(reset, HIGH);
-  // delay(20);
-  // digitalWrite(reset, LOW);
+  fillScreen(0x0000);
 }
 

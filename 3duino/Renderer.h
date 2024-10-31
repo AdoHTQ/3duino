@@ -54,7 +54,7 @@ private:
 
 public:
   Matrix<3> position = Matrix<3>(0,0,-5);
-  Matrix<3> scale = Matrix<3>(1,1,1);
+  Matrix<3> scale = Matrix<3>(1.,1.,1.);
   Matrix<3> rotation = Matrix<3>(0,0,0);
 
   Renderer();

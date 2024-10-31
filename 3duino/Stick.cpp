@@ -1,6 +1,9 @@
 #include "Stick.h"
 
-Stick::Stick(uint8_t stickXPort, uint8_t stickYPort) {
+Stick::Stick(uint8_t stickXPort, uint8_t stickYPort, uint8_t stickButtonPort) {
+  pinMode(stickButtonPort, OUTPUT);
+  
+  this->stickButtonPort = stickButtonPort;
   this->stickXPort = stickXPort;
   this->stickYPort = stickYPort;
 }
